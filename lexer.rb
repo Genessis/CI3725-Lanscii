@@ -47,8 +47,8 @@ class Lexer
 					@tokensList << Token.new("WORD", word, [lineNum, colNum])
 					colNum += word.size
 				# Este es para los espacios en blanco.	
-				when /^\s+/
-					word = line[/^\s+/]
+				when /^[ \t]+/
+					word = line[/^[ \t]+/]
 					line = line.partition(word).last
 					colNum += word.size
 				# y esto es para todo lo que no sea letra.
