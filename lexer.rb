@@ -36,22 +36,22 @@ class Lexer
 			colNum = 1
 			# Cuando lo que queda de la linea es un salto de pagina, pasamos a la
 			# proxima linea (arriba)
-			while line != "\n"
+			while line != ""
 				# Este case sirve para matchear regexs con los 'when' en lo que quede de linea.
 				case line
 				# En este ejemplo, como el archivo de prueba es de texto, va a matchear
 				# cada palabra.
-				when /^\w+/
-					word = line[/^\w+/]
+				when /^[a-zA-Z+]/
+					word = line[/^[a-zA-Z]+/]
 					line = line.partition(word).last
 					@tokensList << Token.new("WORD", word, [lineNum, colNum])
 					colNum += word.size
-				# Este es para los espacios en blanco.	
-				when /^[ \t]+/
-					word = line[/^[ \t]+/]
+				# Este es para los espacios en blanco, saltos de liena o tabulaciones.
+				when /^[\s\t]+/
+					word = line[/^[\s\t]+/]
 					line = line.partition(word).last
 					colNum += word.size
-				# y esto es para todo lo que no sea letra.
+				# y esto es para todo lo que no sean palabras validas (letras en este ejemplo).
 				else
 					word = line[/^./]
 					line = line.partition(word).last
@@ -67,6 +67,7 @@ class Lexer
 				puts "ERROR: Unexpected character: '#{err.symbol}' at line: " \
 							"#{err.position[0]}, column: #{err.position[1]} \n"
 			end
+		# Si todos los caracteres son validos, se imprimen los tokens.
 		else
 			for tok in @tokensList
 				puts "token #{tok.id} value #{tok.symbol} at line: #{tok.position[0]}," \
