@@ -253,6 +253,21 @@ class Lexer
 						@tokensList << Token.new("NEGATION", word, [lineNum, colNum])
 						colNum += word.size	
 
+					# Va a matchear todos \/, es de tipo boolean, llamado OR. 
+					when /^\\\//
+						word = line[/^\\\//]
+						line = line.partition(word).last
+						@tokensList << Token.new("OR", word, [lineNum, colNum])
+						colNum += word.size		
+
+					# Va a matchear todos /\, es de tipo boolean, llamado OR. 
+					when /^\/\\/
+						word = line[/^\/\\/]
+						line = line.partition(word).last
+						@tokensList << Token.new("AND", word, [lineNum, colNum])
+						colNum += word.size		
+	
+
 					# Va a matchear todos los lienzos menos el vacio, es de tipo CANVAS. 
 					when /^<->/ , /^<\|>/ , /^<\_>/ , /^<\s>/ , /^<\/>/ , /^<\\>/
 						word = line[/^<.>/]
