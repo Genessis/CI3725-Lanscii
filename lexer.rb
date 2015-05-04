@@ -233,8 +233,8 @@ class Lexer
 						colNum += word.size
 
 					# Va a matchear todos $, es de tipo ROTATION. 
-					when /^$/
-						word = line[/^$/]
+					when /^\$/
+						word = line[/^\$/]
 						line = line.partition(word).last
 						@tokensList << Token.new("ROTATION", word, [lineNum, colNum])
 						colNum += word.size	
