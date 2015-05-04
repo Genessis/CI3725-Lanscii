@@ -2,15 +2,11 @@
  *  UNIVERSIDAD SIMÓN BOLÍVAR
  *  Archivo: lexer.rb
  *
- *  Contenido:
- *          Script de cconsulta de la base de datos de estudiantes.
- *			Pre taller 1. 
- *
  *  Creado por:
  *			Genessis Sanchez
  *          Daniela Socas
  *
- *  Último midificación: 30 de Abril de 2015
+ *  Último midificación: 3 de mayo de 2015
 =end
 
 class Token
@@ -46,21 +42,19 @@ class Lexer
 		lineNum = 0
 		commline = 0 
 		commcol = 0 
-		errComm = false #pen
-
+		errComm = false
+		# Iteramos sobre las lineas del archivo.
 		file.each_line do |line|
 			# En cada iteracion (salto de linea), el numero de linea aumenta.
 			# y el numero de columna vuelve a 1.
 			lineNum += 1
 			colNum = 1
-			# Cuando lo que queda de la linea es un salto de pagina, pasamos a la
-			# proxima linea (arriba)
+			# Cuando se acabe la linea, pasamos a la proxima.
 			while line != ""
-
-				#Revisa que no esta leyendo dentro de un comentario.
+				# Verificacion de lectura de comentarios.
 				if errComm == true then	
 					case line
-					#Si encuentra el fin del comentario no da error. 	
+					# Si encuentra el fin del comentario no da error. 	
 					when /(.*?)\-}/		
 						errComm = false
 						word = line[/(.*?)\-}/]
@@ -68,7 +62,7 @@ class Lexer
 						colNum += word.size
 
 					else 	
-						#Sigue buscando en lineas el fin del comentario
+						# Sigue buscando en lineas el fin del comentario.
 						if line =~ /^[\s]+/
 							word = line[/^[\s]+/] 
 						else	
@@ -233,7 +227,7 @@ class Lexer
 						colNum += word.size
 
 					# Va a matchear todos $, es de tipo ROTATION. 
-					when /^$/
+					when /^\$/
 						word = line[/^$/]
 						line = line.partition(word).last
 						@tokensList << Token.new("ROTATION", word, [lineNum, colNum])
