@@ -18,8 +18,7 @@ Pregunta 1:
 	necesarias para un comentario, en este caso que empiece con {-y termine con -} por 
 	que van textual en nuestra regexp. En el medio, sin embargo puede ir cualquier cosa
 	por lo que usamos el . que en regexp es cualquier cosa y el * para especificar que 
-	sea lo que sea el punto puede ocurrir 0 o mas veces. 
-	Presente en la imagen "pregunta1.png" 
+	sea lo que sea el punto puede ocurrir 0 o mas veces.  
 
 Pregunta 2:
 -E0 = write
