@@ -3,14 +3,13 @@
  *  Archivo: lexer.rb
  *
  *  Contenido:
- *          Script de cconsulta de la base de datos de estudiantes.
- *			Pre taller 1. 
+ *          Analisis lexico de un archivo
  *
  *  Creado por:
- *			Genessis Sanchez
- *          Daniela Socas
+ *			Genessis Sanchez	11-10935
+ *          Daniela Socas		11-10979
  *
- *  Último midificación: 30 de Abril de 2015
+ *  Último midificación: 3 Mayo de 2015
 =end
 
 class Token
@@ -141,11 +140,16 @@ class Lexer
 						colNum += word.size
 
 					# Va a matchear todos los numeros, son de tipo NUMBER.
-					# \d = [0-9] 
+					# \d = [0-9]. En caso de exceder el limite es un token no valido. 
 					when /^\d+/
 						word = line[/\d+/]
-						line = line.partition(word).last
-						@tokensList << Token.new("NUMBER", word, [lineNum, colNum])
+						if word.to_i > 2147483647
+							@errList << Token.new("", word, [lineNum, colNum])
+							line = line.partition(word).last
+						else
+							line = line.partition(word).last
+							@tokensList << Token.new("NUMBER", word, [lineNum, colNum])
+						end
 						colNum += word.size
 
 					# Va a matchear los @, son de tipo AT. 
@@ -162,6 +166,13 @@ class Lexer
 						@tokensList << Token.new("EXCLAMATION MARK", word, [lineNum, colNum])
 						colNum += word.size
 
+					# Va a matchear todos los .., son de tipo TWO POINTS.
+					when /^\.\./
+						word = line[/^\.\./]
+						line = line.partition(word).last
+						@tokensList << Token.new("TWO POINTS", word, [lineNum, colNum])
+						colNum += word.size	
+						
 					# Va a matchear todos }, es de tipo LCURLY. 
 					when /^[{]/
 						word = line[/^[{]/]
@@ -219,8 +230,8 @@ class Lexer
 						colNum += word.size	
 
 					# Va a matchear todos ?, es de tipo QUESTIONMARK. 
-					when /^[?]/
-						word = line[/^[?]/]
+					when /^[\?]/
+						word = line[/^[\?]/]
 						line = line.partition(word).last
 						@tokensList << Token.new("QUESTIONMARK", word, [lineNum, colNum])
 						colNum += word.size
@@ -260,7 +271,7 @@ class Lexer
 						@tokensList << Token.new("OR", word, [lineNum, colNum])
 						colNum += word.size		
 
-					# Va a matchear todos /\, es de tipo boolean, llamado OR. 
+					# Va a matchear todos /\, es de tipo boolean, llamado AND. 
 					when /^\/\\/
 						word = line[/^\/\\/]
 						line = line.partition(word).last
