@@ -23,4 +23,5 @@ BREVE EXPLICACION:
  muestran el error en pantalla.
  	Esta entrega del proyecto se encuentra finalizada y capaz de encontrar todos los tokens
  presentes en un archivo y de mostrar los errores en caso de haberlos.
+ 	Si un numero excede el valor de 2147483647 se considera no válido y por lo tano no se reconoce. 
 

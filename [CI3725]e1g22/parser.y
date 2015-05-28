@@ -1,0 +1,31 @@
+class Parser
+
+	prechigh
+		
+	preclow
+
+	token READ WRITE TRUE FALSE IDENTIFIER NUMBER AT EXCLAMATION_MARK
+		TWO_POINTS LCURLY RCURLY RPARENTHESIS LPARENTHESIS RBRACKET 
+		LBRACKET PIPE SEMICOLON QUESTION_MARK MINUS ROTATION TRANSPOTITION
+		NEGATION OR AND CANVAS GREATER_OR_EQUAL LESS_OR_EQUAL GREATER_THAN
+		LESS_THAN NOT_EQUAL EQUALS COLON PERCENT PLUS MULTIPLY DIVISION
+
+	rule
+
+end
+
+---- inner
+
+require './lexer.rb'
+
+def initialize(lexer)
+	@lexer = lexer
+end
+
+def next_token
+	@lexer.next_token
+end
+
+def parse
+	do_parse
+end

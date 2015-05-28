@@ -2,21 +2,14 @@
  *  UNIVERSIDAD SIMÓN BOLÍVAR
  *  Archivo: lexer.rb
  *
-<<<<<<< HEAD
-=======
  *  Contenido:
  *          Analisis lexico de un archivo
  *
->>>>>>> 7395df858dbcb80ea386e9caae10bda828b13134
  *  Creado por:
  *			Genessis Sanchez	11-10935
  *          Daniela Socas		11-10979
  *
-<<<<<<< HEAD
- *  Último midificación: 3 de mayo de 2015
-=======
- *  Último midificación: 3 Mayo de 2015
->>>>>>> 7395df858dbcb80ea386e9caae10bda828b13134
+ *  Último midificación: 27 Mayo de 2015
 =end
 
 class Token
@@ -29,9 +22,14 @@ class Token
 		@symbol = symbol
 		@position = position
 	end
+
+	def idAndValue
+		return [@id, @symbol]
+	end
 end
 
 class Lexer
+	attr_accessor :tokensList
 =begin
 	atr:   @tokensList: lista de tokens validos del lenguaje.
 		   @errList: lista de tokens no validos del lenguaje.
@@ -41,6 +39,7 @@ class Lexer
 =end
 	def initialize
 		@tokensList = Array.new
+		@tokensAux = Array.new
 		@errList = Array.new
 		errComm = false
 	end
@@ -52,19 +51,21 @@ class Lexer
 		lineNum = 0
 		commline = 0 
 		commcol = 0 
-		errComm = false
-		# Iteramos sobre las lineas del archivo.
+		errComm = false #pen
+
 		file.each_line do |line|
 			# En cada iteracion (salto de linea), el numero de linea aumenta.
 			# y el numero de columna vuelve a 1.
 			lineNum += 1
 			colNum = 1
-			# Cuando se acabe la linea, pasamos a la proxima.
+			# Cuando lo que queda de la linea es un salto de pagina, pasamos a la
+			# proxima linea (arriba)
 			while line != ""
-				# Verificacion de lectura de comentarios.
+
+				#Revisa que no esta leyendo dentro de un comentario.
 				if errComm == true then	
 					case line
-					# Si encuentra el fin del comentario no da error. 	
+					#Si encuentra el fin del comentario no da error. 	
 					when /(.*?)\-}/		
 						errComm = false
 						word = line[/(.*?)\-}/]
@@ -72,7 +73,7 @@ class Lexer
 						colNum += word.size
 
 					else 	
-						# Sigue buscando en lineas el fin del comentario.
+						#Sigue buscando en lineas el fin del comentario
 						if line =~ /^[\s]+/
 							word = line[/^[\s]+/] 
 						else	
@@ -112,28 +113,28 @@ class Lexer
 					when /^read/
 						word = line[/^read/]
 						line = line.partition(word).last
-						@tokensList << Token.new("READ", word, [lineNum, colNum])
+						@tokensList << Token.new(:READ, word, [lineNum, colNum])
 						colNum += word.size
 
 					# Va a matchear con write. 
 					when /^write/
 						word = line[/^write/]
 						line = line.partition(word).last
-						@tokensList << Token.new("WRITE", word, [lineNum, colNum])
+						@tokensList << Token.new(:WRITE, word, [lineNum, colNum])
 						colNum += word.size
 
 					# Va a matchear con true, tipo boolean llamado TRUE. 
 					when /^true/
 						word = line[/^true/]
 						line = line.partition(word).last
-						@tokensList << Token.new("TRUE", word, [lineNum, colNum])
+						@tokensList << Token.new(:TRUE, word, [lineNum, colNum])
 						colNum += word.size
 
 					# Va a matchear con false, tipo boolean llamado FALSE. 
 					when /^false/
 						word = line[/^false/]
 						line = line.partition(word).last
-						@tokensList << Token.new("FALSE", word, [lineNum, colNum])
+						@tokensList << Token.new(:FALSE, word, [lineNum, colNum])
 						colNum += word.size	
 
 					# Va a matchear todas las palabras, son de tipo IDENTIFIER. 
@@ -141,7 +142,7 @@ class Lexer
 					when /^[a-zA-Z]\w*/
 						word = line[/^[a-zA-Z]\w*/]
 						line = line.partition(word).last
-						@tokensList << Token.new("IDENTIFIER", word, [lineNum, colNum])
+						@tokensList << Token.new(:IDENTIFIER, word, [lineNum, colNum])
 						colNum += word.size
 
 					# Va a matchear todos los numeros, son de tipo NUMBER.
@@ -153,7 +154,7 @@ class Lexer
 							line = line.partition(word).last
 						else
 							line = line.partition(word).last
-							@tokensList << Token.new("NUMBER", word, [lineNum, colNum])
+							@tokensList << Token.new(:NUMBER, word, [lineNum, colNum])
 						end
 						colNum += word.size
 
@@ -161,130 +162,126 @@ class Lexer
 					when /^[@]/
 						word = line[/^[@]/]
 						line = line.partition(word).last
-						@tokensList << Token.new("AT", word, [lineNum, colNum])
+						@tokensList << Token.new(:AT, word, [lineNum, colNum])
 						colNum += word.size
 
 					# Va a matchear todos !, son de tipo EXCLAMATION MARK. 
 					when /^[!]/
 						word = line[/^[!]/]
 						line = line.partition(word).last
-						@tokensList << Token.new("EXCLAMATION MARK", word, [lineNum, colNum])
+						@tokensList << Token.new(:EXCLAMATION_MARK, word, [lineNum, colNum])
 						colNum += word.size
 
 					# Va a matchear todos los .., son de tipo TWO POINTS.
 					when /^\.\./
 						word = line[/^\.\./]
 						line = line.partition(word).last
-						@tokensList << Token.new("TWO POINTS", word, [lineNum, colNum])
+						@tokensList << Token.new(:TWO_POINTS, word, [lineNum, colNum])
 						colNum += word.size	
 						
 					# Va a matchear todos }, es de tipo LCURLY. 
 					when /^[{]/
 						word = line[/^[{]/]
 						line = line.partition(word).last
-						@tokensList << Token.new("LCURLY", word, [lineNum, colNum])
+						@tokensList << Token.new(:LCURLY, word, [lineNum, colNum])
 						colNum += word.size					
 
 					# Va a matchear todos }, es de tipo RCURLY. 
 					when /^[}]/
 						word = line[/^[}]/]
 						line = line.partition(word).last
-						@tokensList << Token.new("RCURLY", word, [lineNum, colNum])
+						@tokensList << Token.new(:RCURLY, word, [lineNum, colNum])
 						colNum += word.size						
 
 					# Va a matchear todos ), es de tipo RPARENTHESIS. 
 					when /^[)]/
 						word = line[/^[)]/]
 						line = line.partition(word).last
-						@tokensList << Token.new("RPARENTHESIS", word, [lineNum, colNum])
+						@tokensList << Token.new(:RPARENTHESIS, word, [lineNum, colNum])
 						colNum += word.size	
 
 					# Va a matchear todos (, es de tipo LPARENTHESIS. 
 					when /^[(]/
 						word = line[/^[(]/]
 						line = line.partition(word).last
-						@tokensList << Token.new("LPARENTHESIS", word, [lineNum, colNum])
+						@tokensList << Token.new(:LPARENTHESIS, word, [lineNum, colNum])
 						colNum += word.size	
 
 					# Va a matchear todos ], es de tipo RBRACKET
 					when /^(\])/
 						word = line[/(\])/]
 						line = line.partition(word).last
-						@tokensList << Token.new("RBRACKET", word, [lineNum, colNum])
+						@tokensList << Token.new(:RBRACKET, word, [lineNum, colNum])
 						colNum += word.size	
 
 					# Va a matchear todos [, es de tipo LBRACKET. 
 					when /^\[/
 						word = line[/^\[/]
 						line = line.partition(word).last
-						@tokensList << Token.new("LBRACKET", word, [lineNum, colNum])
+						@tokensList << Token.new(:LBRACKET, word, [lineNum, colNum])
 						colNum += word.size		
 
 					# Va a matchear todos |, es de tipo PIPE. 
 					when /^[|]/
 						word = line[/^[|]/]
 						line = line.partition(word).last
-						@tokensList << Token.new("PIPE", word, [lineNum, colNum])
+						@tokensList << Token.new(:PIPE, word, [lineNum, colNum])
 						colNum += word.size
 
 					# Va a matchear todos ;, es de tipo SEMICOLON. 
 					when /^[;]/
 						word = line[/^[;]/]
 						line = line.partition(word).last
-						@tokensList << Token.new("SEMICOLON", word, [lineNum, colNum])
+						@tokensList << Token.new(:SEMICOLON, word, [lineNum, colNum])
 						colNum += word.size	
 
 					# Va a matchear todos ?, es de tipo QUESTIONMARK. 
 					when /^[\?]/
 						word = line[/^[\?]/]
 						line = line.partition(word).last
-						@tokensList << Token.new("QUESTIONMARK", word, [lineNum, colNum])
+						@tokensList << Token.new(:QUESTION_MARK, word, [lineNum, colNum])
 						colNum += word.size
 
 					# Va a matchear todos -, es de tipo MINUS. 
 					when /^[-]/
 						word = line[/^[-]/]
 						line = line.partition(word).last
-						@tokensList << Token.new("MINUS", word, [lineNum, colNum])
+						@tokensList << Token.new(:MINUS, word, [lineNum, colNum])
 						colNum += word.size
 
 					# Va a matchear todos $, es de tipo ROTATION. 
 					when /^\$/
-<<<<<<< HEAD
-						word = line[/^$/]
-=======
 						word = line[/^\$/]
->>>>>>> 7395df858dbcb80ea386e9caae10bda828b13134
 						line = line.partition(word).last
-						@tokensList << Token.new("ROTATION", word, [lineNum, colNum])
+						@tokensList << Token.new(:ROTATION, word, [lineNum, colNum])
 						colNum += word.size	
 
 					# Va a matchear todos ', es de tipo TRANSPOSITION. 
 					when /^'/
 						word = line[/^'/]
 						line = line.partition(word).last
-						@tokensList << Token.new("TRANSPOSITION", word, [lineNum, colNum])
+						@tokensList << Token.new(:TRANSPOSITION, word, [lineNum, colNum])
 						colNum += word.size
 
 					# Va a matchear todos ^, es de tipo boolean, llamado NEGATION. 
 					when /^\^/
 						word = line[/^\^/]
 						line = line.partition(word).last
-						@tokensList << Token.new("NEGATION", word, [lineNum, colNum])
+						@tokensList << Token.new(:NEGATION, word, [lineNum, colNum])
 						colNum += word.size	
 
 					# Va a matchear todos \/, es de tipo boolean, llamado OR. 
 					when /^\\\//
 						word = line[/^\\\//]
 						line = line.partition(word).last
-						@tokensList << Token.new("OR", word, [lineNum, colNum])
+						@tokensList << Token.new(:OR, word, [lineNum, colNum])
 						colNum += word.size		
 
 					# Va a matchear todos /\, es de tipo boolean, llamado AND. 
 					when /^\/\\/
 						word = line[/^\/\\/]
 						line = line.partition(word).last
-						@tokensList << Token.new("AND", word, [lineNum, colNum])
+						@tokensList << Token.new(:AND, word, [lineNum, colNum])
 						colNum += word.size		
 	
 
@@ -292,63 +289,63 @@ class Lexer
 					when /^<->/ , /^<\|>/ , /^<\_>/ , /^<\s>/ , /^<\/>/ , /^<\\>/
 						word = line[/^<.>/]
 						line = line.partition(word).last
-						@tokensList << Token.new("CANVAS", word[1], [lineNum, colNum])
+						@tokensList << Token.new(:CANVAS, word[1], [lineNum, colNum])
 						colNum += word.size	
 
 					# Va a matchear con #(lienzo vacio), es de tipo CANVAS. 
 					when /^#/ 
 						word = line[/^#/]
 						line = line.partition(word).last
-						@tokensList << Token.new("CANVAS", word, [lineNum, colNum])
+						@tokensList << Token.new(:CANVAS, word, [lineNum, colNum])
 						colNum += word.size	
 
 					# Va a matchear LOS <=, es de tipo GREATER OR  EQUAL. 
 					when /^>=/
 						word = line[/^>=/]
 						line = line.partition(word).last
-						@tokensList << Token.new("GREATER OR EQUAL", word, [lineNum, colNum])
+						@tokensList << Token.new(:GREATER_OR_EQUAL, word, [lineNum, colNum])
 						colNum += word.size	
 
 					# Va a matchear LOS <=, es de tipo LESS OR EQUAL. 
 					when /^<=/
 						word = line[/^<=/]
 						line = line.partition(word).last
-						@tokensList << Token.new("LESS OR EQUAL", word, [lineNum, colNum])
+						@tokensList << Token.new(:LESS_OR_EQUAL, word, [lineNum, colNum])
 						colNum += word.size	
 					
 					# Va a matchear LOS >, es de tipo GREATER THAN.
 					when /^>/
 						word = line[/^>/]
 						line = line.partition(word).last
-						@tokensList << Token.new("GREATER THAN", word, [lineNum, colNum])
+						@tokensList << Token.new(:GREATER_THAN, word, [lineNum, colNum])
 						colNum += word.size			
 
 					# Va a matchear LOS <, es de tipo LESS THAN. 
 					when /^</
 						word = line[/^</]
 						line = line.partition(word).last
-						@tokensList << Token.new("LESS THAN", word, [lineNum, colNum])
+						@tokensList << Token.new(:LESS_THAN, word, [lineNum, colNum])
 						colNum += word.size		
 
 					# Va a matchear todos =, es de tipo NOT EQUAL. 
 					when /^\/=/
 						word = line[/^\/=/]
 						line = line.partition(word).last
-						@tokensList << Token.new("NOT EQUAL", word, [lineNum, colNum])
+						@tokensList << Token.new(:NOT_EQUAL, word, [lineNum, colNum])
 						colNum += word.size	
 
 					# Va a matchear todos =, es de tipo EQUALS. 
 					when /^=/
 						word = line[/^=/]
 						line = line.partition(word).last
-						@tokensList << Token.new("EQUALS", word, [lineNum, colNum])
+						@tokensList << Token.new(:EQUALS, word, [lineNum, colNum])
 						colNum += word.size	
 
 					# Va a matchear todos :, es de tipo COLON. 
 					when /^:/
 						word = line[/^:/]
 						line = line.partition(word).last
-						@tokensList << Token.new("COLON", word, [lineNum, colNum])
+						@tokensList << Token.new(:COLON, word, [lineNum, colNum])
 						colNum += word.size		
 
 
@@ -356,28 +353,28 @@ class Lexer
 					when /^[%]/
 						word = line[/^[%]/]
 						line = line.partition(word).last
-						@tokensList << Token.new("PERCENT", word, [lineNum, colNum])
+						@tokensList << Token.new(:PERCENT, word, [lineNum, colNum])
 						colNum += word.size	
 
 					# Va a matchear todos +, es de tipo PLUS. 
 					when /^[+]/
 						word = line[/^[+]/]
 						line = line.partition(word).last
-						@tokensList << Token.new("PLUS", word, [lineNum, colNum])
+						@tokensList << Token.new(:PLUS, word, [lineNum, colNum])
 						colNum += word.size
 
 					# Va a matchear todos +, es de tipo PLUS. 
 					when /^[*]/
 						word = line[/^[*]/]
 						line = line.partition(word).last
-						@tokensList << Token.new("MULTIPLY", word, [lineNum, colNum])
+						@tokensList << Token.new(:MULTIPLY, word, [lineNum, colNum])
 						colNum += word.size									
 
 					# Va a matchear todos /, es de tipo DIVISION. 
 					when /^[\/]/
 						word = line[/^[\/]/]
 						line = line.partition(word).last
-						@tokensList << Token.new("DIVISION", word, [lineNum, colNum])
+						@tokensList << Token.new(:DIVISION, word, [lineNum, colNum])
 						colNum += word.size
 
 					# y esto es para todo lo que no sean palabras validas (letras en este ejemplo).
@@ -411,15 +408,16 @@ class Lexer
 			end
 		end	
 	end
+
+	def next_token
+		if ((tok = @tokensList.shift) != nil)
+			@tokensAux << tok
+			return tok.idAndValue
+		else
+			return nil
+		end
+	end
 end
-
-
-file_name = ARGV.first
-file = File.open(file_name, "r")
-lexer = Lexer.new
-lexer.identifier(file)
-file.close
-
 
 
 
