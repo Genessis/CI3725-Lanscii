@@ -23,6 +23,7 @@ class Parser
 		left OR
 
 		right ASSIGN
+		left SEMICOLON
 
 	preclow
 
@@ -69,14 +70,14 @@ class Parser
 		# => o subprograma en LANSCII.
 		Inst
 		: Inst SEMICOLON Inst
-		| Ident EQUALS Expr =ASSIGN
+		| Ident EQUALS Expr 	=ASSIGN
 		| READ Ident
 		| WRITE Expr
 		| LPARENTHESIS Expr QUESTION_MARK Inst RPARENTHESIS
 		| LPARENTHESIS Expr QUESTION_MARK Inst COLON Inst RPARENTHESIS
 		| LBRACKET Expr PIPE Inst RBRACKET
 		| LBRACKET Expr TWO_POINTS Expr PIPE Inst RBRACKET
-		| LBRACKET Ident COLON Expr TWO_POINTS Expr PIPE Inst LBRACKET
+		| LBRACKET Ident COLON Expr TWO_POINTS Expr PIPE Inst RBRACKET
 		| S
 		;
 
