@@ -299,6 +299,20 @@ class Lexer
 						@tokensList << Token.new(:CANVAS, word, [lineNum, colNum])
 						colNum += word.size	
 
+					# Va a matchear los &, es de tipo ET
+					when /^&/
+						word = line[/^&/]
+						line = line.partition(word).last
+						@tokensList << Token.new(:ET, word, [lineNum, colNum])
+						colNum += word.size
+
+					# Va a matchear los ~, es de tipo TILDE
+					when /^~/
+						word = line[/^~/]
+						line = line.partition(word).last
+						@tokensList << Token.new(:TILDE, word, [lineNum, colNum])
+						colNum += word.size	
+
 					# Va a matchear LOS <=, es de tipo GREATER OR  EQUAL. 
 					when /^>=/
 						word = line[/^>=/]
