@@ -7,6 +7,7 @@ class Parser
 
 		nonassoc PRNTS
 
+		nonassoc NEGATION
 		nonassoc UMINUS
 		left MULTIPLY DIVISION PERCENT
 		left PLUS MINUS
@@ -15,13 +16,13 @@ class Parser
 		nonassoc ROTATION
 		left ET TILDE
 
-		left LESS_THAN GREATER_THAN LESS_OR_EQUAL GREATER_OR_EQUAL
-		right EQ NOT_EQUAL # Como el mismo simbolo se usa para dos cosas, le asigne a la expresion de igualdad el nombre EQ. No estoy segura de si funciona
-		nonassoc NEGATION
+		nonassoc LESS_THAN GREATER_THAN LESS_OR_EQUAL GREATER_OR_EQUAL
+		right NOT_EQUAL EQUALS
+
 		left AND
 		left OR
-		#nonassoc S_COND E_COND
-		right ASSIGN # Idem
+
+		right ASSIGN
 
 	preclow
 
@@ -71,8 +72,8 @@ class Parser
 		| Ident EQUALS Expr =ASSIGN
 		| READ Ident
 		| WRITE Expr
-		| LPARENTHESIS Expr QUESTION_MARK Inst RPARENTHESIS	#=S_COND
-		| LPARENTHESIS Expr QUESTION_MARK Inst COLON Inst RPARENTHESIS	#=E_COND
+		| LPARENTHESIS Expr QUESTION_MARK Inst RPARENTHESIS
+		| LPARENTHESIS Expr QUESTION_MARK Inst COLON Inst RPARENTHESIS
 		| LBRACKET Expr PIPE Inst RBRACKET
 		| LBRACKET Expr TWO_POINTS Expr PIPE Inst RBRACKET
 		| LBRACKET Ident COLON Expr TWO_POINTS Expr PIPE Inst LBRACKET
@@ -100,7 +101,7 @@ class Parser
 		| Expr GREATER_THAN Expr
 		| Expr LESS_OR_EQUAL Expr
 		| Expr GREATER_OR_EQUAL Expr
-		| Expr EQUALS Expr 	=EQ
+		| Expr EQUALS Expr
 		| Expr NOT_EQUAL Expr
 		| Expr TILDE Expr
 		| Expr ET Expr
