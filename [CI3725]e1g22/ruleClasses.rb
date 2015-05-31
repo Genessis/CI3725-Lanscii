@@ -172,11 +172,18 @@ class BinExp
 end
 
 class UnaExp
-	def initialize(op, type, expr)
-		
-	end	
+	def initialize(op, expr)
+		@elem = expr
+		@op = op
+	end
+	def printAST(lvl)
+		for i in 1..lvl
+			print "| "
+		end
+		puts "OPERATION: #{op}"
+		elem.printAST(lvl+1)
+	end
 end
-
 
 class Terms
 	def initialize(nameTerm, term)
