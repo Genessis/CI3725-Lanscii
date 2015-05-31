@@ -33,16 +33,46 @@ end
 
 class Assign
 	def intialize(type1, var, type2, expr)
-		@types = [type1, type2]
-		@branches = [var, expr]
+		@types = [type1, type2]	# Donde type1 es :VARIABLE y type2 es :EXPRESSION
+		@branches = [var, expr] # Donde var es clase Var y expr es clase Expr
 	end
 	def printAST(lvl)
+		# Escribirá el nombre de cada operación y llamará a los prints de las clases
+		# => involucradas
 		for i in 0..1
 			for j in 1..lvl
-				prit "| "
+				print "| "
 			end
 			puts "#{@types[0]}:"
 			@branches[i].printAST(lvl+1)
 		end
+	end
+end
+
+class Read
+	def initialize(instID, var)
+		@instID = instID	# Donde intID es :READ
+		@var = var 	# Donde Var es clase Var
+	end
+	def printAST(lvl)
+		for i in 1..lvl
+			print "| "
+		end
+		puts "#{@instID}:"
+		@var.printAST(lvl+1)
+	end
+end
+
+class Write
+	def initialize(instID,expr)
+		@instID = instID	# Donde intID es :WRITE
+		@expr = expr 	# Donde Var es clase Var
+	end
+	def printAST(lvl)
+		for i in 1..lvl
+			print "| "
+		end
+		puts "#{@instID}:"
+		@expr.printAST(lvl+1)
 	end
 end
