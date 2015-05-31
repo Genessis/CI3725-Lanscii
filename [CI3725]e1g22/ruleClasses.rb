@@ -76,3 +76,21 @@ class Write
 		@expr.printAST(lvl+1)
 	end
 end
+
+class Terms
+	def initialize(nameTerm, term)
+		@opID = nameTerm
+		@term = [term]
+	end
+	def printAST(lvl)
+		for i in 1..lvl
+			print "| "
+		end		
+		case @opID
+		when :IDENTIFIER, :CANVAS, :NUMBER, :TRUE, :FALSE 
+			puts "#{@opID}: #{@term[0]}"
+		else
+			puts 'error'
+		end 
+	end
+end 
