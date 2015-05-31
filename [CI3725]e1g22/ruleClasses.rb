@@ -187,18 +187,16 @@ end
 
 class Terms
 	def initialize(nameTerm, term)
-		@opID = nameTerm
-		@term = [term]
+		@nameTerm = nameTerm
+		@term = term
 	end
 	def printAST(lvl)
 		for i in 1..lvl
 			print "| "
 		end		
-		case @opID
+		case @nameTerm
 		when :IDENTIFIER, :CANVAS, :NUMBER, :TRUE, :FALSE 
-			puts "#{@opID}: #{@term[0]}"
-		else
-			puts 'error'
+			puts "#{nameTerm}: #{@term}"
 		end 
 	end
 end
