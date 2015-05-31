@@ -1,14 +1,20 @@
 class S
-	def initialize(namedecl = nil, decl = nil, nameinst, inst)
-		@opID = [namedecl, nameinst]
-		@branches = [decl, inst]
+	# Donde inst es una clase Instr.
+	def initialize(inst)
+		@inst = inst
 	end	
-	def printAST(lvl)
-		@branches[1].printAST(0)
+	def printAST(lvl=nil)
+		if lvl == nil
+			inst.printAST(0)
+		else
+			inst.print(lvl)
+		end
 	end
 end
 
 class Instr
+	# Donde nameinst1 puede ser :INSTR, :READ, :WRITE, :ASSIGN, :COND, :IND_LOOP, 
+	# => :DET_LOOP o :S y nameinst2 tiene que ser :INSTR.
 	def initialize(nameinst1, inst1, nameinst2 = nil, inst2 = nil)
 		@opID = [nameinst1, nameinst2]
 		@branches = [inst1, inst2]
@@ -93,6 +99,23 @@ class Cond
 				@elems[i].printAST(lvl+1)
 			end
 		end
+	end
+end
+
+class ILoop
+	# Donde type1 es :WHILE y type2 es :DO
+	def initialize(type1, expr, type2, inst)
+		@types = [type1, type2]
+		@elems = [expr, inst]
+	end
+	def printAST(lvl)
+		for i in 0..1
+			for j in 1..lvl
+				print "| "
+			end
+			puts "#{@types[i]:}"
+			@elems.printAST(lvl+1)
+		end		
 	end
 end
 
