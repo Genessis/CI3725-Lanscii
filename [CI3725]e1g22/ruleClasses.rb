@@ -118,7 +118,7 @@ class ILoop
 			for j in 1..lvl
 				print "| "
 			end
-			puts "#{@types[i]:}"
+			puts "#{@types[i]}:"
 			@elems.printAST(lvl+1)
 		end		
 	end
@@ -138,7 +138,7 @@ class DLoop
 				for j in 1..lvl
 					print "| "
 				end
-				puts "#{@types[i]:}"
+				puts "#{@types[i]}:"
 				@elems[i].printAST(lvl+1)
 			end
 		end
