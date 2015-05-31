@@ -185,6 +185,21 @@ class UnaExp
 	end
 end
 
+# Donde type es :EXPRESSION y expr es una expresion cualquiera
+class ParExp
+	def initialize(type, expr)
+		@type = type
+		@expr = expr		
+	end
+	def printAST(lvl)
+		for i in 1..lvl
+			print "| "
+		end
+		puts "#{type}"
+		expr.printAST(lvl+1)		
+	end	
+end
+
 class Terms
 	def initialize(nameTerm, term)
 		@nameTerm = nameTerm
