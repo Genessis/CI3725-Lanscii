@@ -31,18 +31,37 @@ class Instr
 	end
 end
 
-class Assign
-	def intialize(type1, var, type2, expr)
-		@types = [type1, type2]
-		@branches = [var, expr]
-	end
+class Terms
+	def initialize(nameTerm, term)
+		@opID = nameTerm
+		@term = [term]
+	end	
+
 	def printAST(lvl)
-		for i in 0..1
-			for j in 1..lvl
-				prit "| "
-			end
-			puts "#{@types[0]}:"
-			@branches[i].printAST(lvl+1)
+		for i in 1..lvl
+			print "| "
 		end
+
+		case @opID
+		when :IDENTIFIER, :CANVAS, :NUMBER, :TRUE, :FALSE 
+			print @opID
+			puts ": "
+			print @term[0]
+		else
+			puts 'error'
+		end 
 	end
-end
+end 
+
+
+
+
+
+
+
+
+
+
+
+
+
