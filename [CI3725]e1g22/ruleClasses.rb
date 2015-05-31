@@ -93,4 +93,4 @@ class Terms
 			puts 'error'
 		end 
 	end
-end 
+end
