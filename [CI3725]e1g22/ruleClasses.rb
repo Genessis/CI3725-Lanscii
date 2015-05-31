@@ -87,7 +87,8 @@ class Write
 end
 
 class Cond
-	# Donde type1 es :CONDITION, type2 es :THEN y tpy3 puede ser :ELSE
+	# Donde type1 es :CONDITION, type2 es :THEN y type3 puede ser :ELSE
+	# Donde expr es de la clase Expr, inst1 e inst2 son de la clase Instr.
 	def initialize(type1, expr, type2, inst1, type3=nil, inst2=nil)
 		@types = [type1, type2, type3]
 		@elems = [expr, inst1, inst2]
@@ -107,6 +108,7 @@ end
 
 class ILoop
 	# Donde type1 es :WHILE y type2 es :DO
+	# Donde expr es de la clase Expr e inst es de la clase Instr
 	def initialize(type1, expr, type2, inst)
 		@types = [type1, type2]
 		@elems = [expr, inst]
@@ -122,13 +124,26 @@ class ILoop
 	end
 end
 
-#class DLoop
-#	def initialize(type1, var, type2, type3, type4)
-#		
-#	end
-#	
-#	
-#end
+class DLoop
+	# Donde type1 es :VARIABLE, type2 y type3 son :EXPRESSION y type4 es :INSTR
+	# Donde var es de la clase Var, expr1 y expr2 son de la clase Expr e
+	# => inst es de la clase Instr
+	def initialize(type1, var, type2, expr1, type3, expr2, type4, inst)
+		@types = [type1, type2, type3, type4]
+		@elems = [var, expr1, expr2, inst]		
+	end
+	def printAST(lvl)
+		for i in 0..3
+			if (elem[i] != nil)
+				for j in 1..lvl
+					print "| "
+				end
+				puts "#{@types[i]:}"
+				@elems[i].printAST(lvl+1)
+			end
+		end
+	end	
+end
 
 class Terms
 	def initialize(nameTerm, term)
