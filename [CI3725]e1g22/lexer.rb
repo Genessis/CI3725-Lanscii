@@ -434,17 +434,3 @@ class Lexer
 		end
 	end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
