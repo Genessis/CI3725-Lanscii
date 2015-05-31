@@ -1,15 +1,21 @@
 class S
-	# Donde inst es una clase Instr.
+	# Donde scope es de la clase Scope.
+	def initialize(scope)
+		@scope = scope
+	end	
+	def printAST(lvl)
+		@scope.printAST(0)
+	end
+end
+
+class Scope
+	# Donde inst es de la clase Instr
 	def initialize(inst)
 		@inst = inst
-	end	
-	def printAST(lvl=nil)
-		if lvl == nil
-			inst.printAST(0)
-		else
-			inst.print(lvl)
-		end
 	end
+	def printAST(lvl)
+		@inst.printAST(lvl)
+	end	
 end
 
 class Instr
@@ -28,9 +34,8 @@ class Instr
 					for i in 1..lvl
 						print "| "
 					end
-						print @opID[0]
-						puts ": "
-						branch.printAST(lvl+1)
+					puts "#{@opID[0]}: "
+					branch.printAST(lvl+1)
 				end
 			end
 		end
@@ -64,7 +69,6 @@ class Read
 		for i in 1..lvl
 			print "| "
 		end
-		puts "#{@instID}:"
 		@var.printAST(lvl+1)
 	end
 end
@@ -78,7 +82,6 @@ class Write
 		for i in 1..lvl
 			print "| "
 		end
-		puts "#{@instID}:"
 		@expr.printAST(lvl+1)
 	end
 end
@@ -118,6 +121,14 @@ class ILoop
 		end		
 	end
 end
+
+#class DLoop
+#	def initialize(type1, var, type2, type3, type4)
+#		
+#	end
+#	
+#	
+#end
 
 class Terms
 	def initialize(nameTerm, term)
