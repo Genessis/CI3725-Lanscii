@@ -157,7 +157,7 @@ class BinExp
 	# Donde type0 es :OPERATION, op puede ser +, -, *, /, %, ~, \/, /\, <, <=,
 	# >, >=, =, ' o &, type1 y type2 son :EXPRESSION y expr1 y expr2 son expresiones
 	def initialize(op, expr1, expr2)
-		@elemes = [expr1, expr2]
+		@elems = [expr1, expr2]
 		@op = op
 	end
 	def printAST(lvl)
