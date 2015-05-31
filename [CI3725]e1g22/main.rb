@@ -13,9 +13,13 @@
 =end
 
 require './lexer.rb'
+require './parser.rb'
 
 file_name = ARGV.first
 file = File.open(file_name, "r")
 lexer = Lexer.new
-lexer.identifier(file)
+if (lexer.identifier(file))
+	parser = Parser.new(lexer)
+	parser.parse
+end
 file.close

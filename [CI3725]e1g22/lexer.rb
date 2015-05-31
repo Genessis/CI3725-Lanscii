@@ -405,20 +405,22 @@ class Lexer
 		if errComm == true 
 			puts "ERROR: Comment section opened but not closed at line: " \
 						"#{commline}, column: #{commcol} \n"
+			return false
 		else 
-
 			if (@errList.length > 0)
 				@tokensList.drop(@tokensList.length)
 				for err in @errList
 					puts "ERROR: Unexpected character: '#{err.symbol}' at line: " \
 								"#{err.position[0]}, column: #{err.position[1]} \n"
 				end
+				return false
 			# Si todos los caracteres son validos, se imprimen los tokens.
 			else
 				for tok in @tokensList
 					puts "token #{tok.id} value (#{tok.symbol}) at line: #{tok.position[0]}," \
 									" column: #{tok.position[1]} \n"
 				end
+				return true
 			end
 		end	
 	end

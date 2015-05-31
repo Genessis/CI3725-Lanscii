@@ -43,7 +43,7 @@ class Parser
 
 		# Simbolo inicial: define un programa en LANSCII e incorpora el alcance.
 		S
-		: LCURLY Decl PIPE Inst RCURLY
+		: LCURLY Decl PIPE Inst RCURLY	{result = S.new("h","c"); result.printAST()}
 		| LCURLY Inst RCURLY
 		;
 
@@ -70,15 +70,37 @@ class Parser
 		# => o subprograma en LANSCII.
 		Inst
 		: Inst SEMICOLON Inst
-		| Ident EQUALS Expr 	=ASSIGN
+		| Assign
+#		| Ident EQUALS Expr 	=ASSIGN
 		| READ Ident
 		| WRITE Expr
-		| LPARENTHESIS Expr QUESTION_MARK Inst RPARENTHESIS
-		| LPARENTHESIS Expr QUESTION_MARK Inst COLON Inst RPARENTHESIS
-		| LBRACKET Expr PIPE Inst RBRACKET
-		| LBRACKET Expr TWO_POINTS Expr PIPE Inst RBRACKET
-		| LBRACKET Ident COLON Expr TWO_POINTS Expr PIPE Inst RBRACKET
+		| Cond
+#		| LPARENTHESIS Expr QUESTION_MARK Inst RPARENTHESIS
+#		| LPARENTHESIS Expr QUESTION_MARK Inst COLON Inst RPARENTHESIS
+		| ILoop
+#		| LBRACKET Expr PIPE Inst RBRACKET
+		| DLoop
+#		| LBRACKET Expr TWO_POINTS Expr PIPE Inst RBRACKET
+#		| LBRACKET Ident COLON Expr TWO_POINTS Expr PIPE Inst RBRACKET
 		| S
+		;
+
+		Assign
+		: Ident EQUALS Expr
+		;
+
+		Cond
+		: LPARENTHESIS Expr QUESTION_MARK Inst RPARENTHESIS
+		| LPARENTHESIS Expr QUESTION_MARK Inst COLON Inst RPARENTHESIS
+		;
+
+		ILoop
+		: LBRACKET Expr PIPE Inst RBRACKET
+		;
+
+		DLoop
+		: LBRACKET Expr TWO_POINTS Expr PIPE Inst RBRACKET
+		| LBRACKET Ident COLON Expr TWO_POINTS Expr PIPE Inst RBRACKET
 		;
 
 	##################################
@@ -143,6 +165,7 @@ end
 ---- inner
 
 require './lexer.rb'
+require './ruleClasses.rb'
 
 def initialize(lexer)
 	@lexer = lexer
