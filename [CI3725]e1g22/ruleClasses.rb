@@ -19,7 +19,7 @@ class Scope
 	end
 	def printAST(lvl)
 		@inst.printAST(lvl)
-	end	
+	end
 end
 
 class Instr
@@ -47,7 +47,7 @@ class Instr
 end
 
 class Assign
-	def intialize(type1, var, type2, expr)
+	def initialize(type1, var, type2, expr)
 		@types = [type1, type2]	# Donde type1 es :VARIABLE y type2 es :EXPRESSION
 		@branches = [var, expr] # Donde var es clase Var y expr es clase Expr
 	end
@@ -58,7 +58,7 @@ class Assign
 			for j in 1..lvl
 				print "| "
 			end
-			puts "#{@types[0]}:"
+			puts "#{@types[i]}:"
 			@branches[i].printAST(lvl+1)
 		end
 	end
@@ -73,6 +73,7 @@ class Read
 		for i in 1..lvl
 			print "| "
 		end
+		puts "#{@instID}"
 		@var.printAST(lvl+1)
 	end
 end
@@ -86,6 +87,7 @@ class Write
 		for i in 1..lvl
 			print "| "
 		end
+		puts "#{@instID} :"
 		@expr.printAST(lvl+1)
 	end
 end
@@ -164,7 +166,7 @@ class BinExp
 		for i in 1..lvl
 			print "| "
 		end
-		puts "OPERATION: #{op}"
+		puts "OPERATION: #{@op}"
 		@elems.each do |elem|
 			elem.printAST(lvl+1)
 		end
@@ -180,8 +182,8 @@ class UnaExp
 		for i in 1..lvl
 			print "| "
 		end
-		puts "OPERATION: #{op}"
-		elem.printAST(lvl+1)
+		puts "OPERATION: #{@op}"
+		@elem.printAST(lvl+1)
 	end
 end
 
@@ -195,8 +197,8 @@ class ParExp
 		for i in 1..lvl
 			print "| "
 		end
-		puts "#{type}"
-		expr.printAST(lvl+1)		
+		puts "#{@type}"
+		@expr.printAST(lvl+1)		
 	end	
 end
 
@@ -211,7 +213,24 @@ class Terms
 		end		
 		case @nameTerm
 		when :IDENTIFIER, :CANVAS, :NUMBER, :TRUE, :FALSE 
-			puts "#{nameTerm}: #{@term}"
+			puts "#{@nameTerm}: #{@term}"
 		end 
 	end
 end
+
+#term = Terms.new(:IDENTIFIER, "x")
+#var = Terms.new(:NUMBER, "4")
+#expbin = BinExp.new("+", term, var)
+#expbin2 = BinExp.new("*", term, expbin)
+#par = ParExp.new(:EXPRESSION, expbin2)
+##par.printAST(3)
+#unex = UnaExp.new("$", par)
+##unex.printAST(2)
+#expbin3 = BinExp.new("~", unex, term)
+##expbin3.printAST(1)
+#as = Assign.new(:VARIABLE, term, :EXPRESSION, expbin3)
+##as.printAST(0)
+#ins = Instr.new(:ASSIGN, as)
+#scop = Scope.new(ins)
+#s = S.new(scop)
+#s.printAST(0)

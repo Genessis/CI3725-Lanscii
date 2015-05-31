@@ -48,8 +48,8 @@ class Parser
 
 		# Alcance: le quita la recursividad al simbolo inicial.
 		Scope 
-		: LCURLY Decl PIPE Inst RCURLY			{result = Scope.new(:Inst , val[3])}
-		| LCURLY Inst RCURLY					{result = Scope.new(:Inst , val[1])}
+		: LCURLY Decl PIPE Inst RCURLY			{result = Scope.new(val[3])}
+		| LCURLY Inst RCURLY					{result = Scope.new(val[1])}
 		;
 
 		# Declaraciones: define las declaraciones en un entorno (alcance).
@@ -74,7 +74,7 @@ class Parser
 		# Instrucciones: define las instrucciones validas asociadas a un programa
 		# => o subprograma en LANSCII.
 		Inst
-		: Inst SEMICOLON Inst 					{result = Instr.new(:INSTR , val[0]), :INSTR , val[2])}
+		: Inst SEMICOLON Inst 					{result = Instr.new(:INSTR , val[0], :INSTR , val[2])}
 		| Assign 								{result = Instr.new(:ASSIGN , val[0])}
 #		| Ident EQUALS Expr 	=ASSIGN
 		| READ Var 								{result = Instr.new(:READ , val[1])}
@@ -105,7 +105,7 @@ class Parser
 
 		DLoop
 		: LBRACKET Expr TWO_POINTS Expr PIPE Inst RBRACKET 				{result = DLoop.new(:VARIABLE, val[1], :EXPRESSION , val[3],:EXPRESSION, val[5])}
-		| LBRACKET Var COLON Expr TWO_POINTS Expr PIPE Inst RBRACKET 	{result = DLoop.new(:VARIABLE, val[1], :EXPRESSION , val[3],:EXPRESSION, val[5], :INSTR , val[7]))}
+		| LBRACKET Var COLON Expr TWO_POINTS Expr PIPE Inst RBRACKET 	{result = DLoop.new(:VARIABLE, val[1], :EXPRESSION , val[3],:EXPRESSION, val[5], :INSTR , val[7])}
 		;
 
 		Var
