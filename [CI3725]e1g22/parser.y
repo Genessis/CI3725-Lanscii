@@ -117,33 +117,33 @@ class Parser
 	##################################
 
 		# Expresiones: define todas las expresiones recursivas en LANSCII.
-		Expr
-		: Term
-		| Expr PLUS Expr
-		| Expr MINUS Expr
-		| Expr MULTIPLY Expr
-		| Expr DIVISION Expr
-		| Expr PERCENT Expr
-		| MINUS Expr 	=UMINUS
-		| LPARENTHESIS Expr RPARENTHESIS =PRNTS
-		| Expr OR Expr
-		| Expr AND Expr
-		| Expr NEGATION
-		| Expr LESS_THAN Expr
-		| Expr GREATER_THAN Expr
-		| Expr LESS_OR_EQUAL Expr
-		| Expr GREATER_OR_EQUAL Expr
-		| Expr EQUALS Expr
-		| Expr NOT_EQUAL Expr
-		| Expr TILDE Expr
-		| Expr ET Expr
-		| ROTATION Expr
-		| Expr TRANSPOSITION
+		Expr 													
+		: Term 												
+		| Expr PLUS Expr 									{result = BinExp.new( "+", val[0], val[2])}
+		| Expr MINUS Expr 									{result = BinExp.new( "-", val[0], val[2])}
+		| Expr MULTIPLY Expr 								{result = BinExp.new( "*", val[0], val[2])}
+		| Expr DIVISION Expr 								{result = BinExp.new( "/", val[0], val[2])}
+		| Expr PERCENT Expr 								{result = BinExp.new( "%", val[0], val[2])}
+		| MINUS Expr 	=UMINUS   							{result = UnaExp.new( "-" , val[0])}
+		| LPARENTHESIS Expr RPARENTHESIS =PRNTS 			{result = ParExp.new( :EXPRESSION , val[1])}
+		| Expr OR Expr   									{result = BinExp.new( "\/" , val[1])}
+		| Expr AND Expr 									{result = BinExp.new( "/\\", val[0], val[2])}
+		| Expr NEGATION 									{result = UnaExp.new( "-", val[0], val[2])}
+		| Expr LESS_THAN Expr 								{result = BinExp.new( "<", val[0], val[2])}
+		| Expr GREATER_THAN Expr 							{result = BinExp.new( ">", val[0], val[2])}
+		| Expr LESS_OR_EQUAL Expr 							{result = BinExp.new( "<=", val[0], val[2])}
+		| Expr GREATER_OR_EQUAL Expr 						{result = BinExp.new( ">=", val[0], val[2])}
+		| Expr EQUALS Expr 									{result = BinExp.new( "=", val[0], val[2])}
+		| Expr NOT_EQUAL Expr 								{result = BinExp.new( "!=", val[0], val[2])}
+		| Expr TILDE Expr 									{result = BinExp.new( "~", val[0], val[2])}
+		| Expr ET Expr 										{result = BinExp.new( "&", val[0], val[2])}
+		| ROTATION Expr 									{result = UnaExp.new( "$", val[1])}
+		| Expr TRANSPOSITION 								{result = UnaExp.new( "'", val[0])}
 		;
 
 		# Expresiones básicas: definen todas las expresiones hoja en LANSCII.
 		Term
-		: Bool
+		: Bool 
 		| Num 
 		| Lien
 		| Var
@@ -151,23 +151,23 @@ class Parser
 
 		# Identificador: define el nombre de variables en LANSCII.
 		Ident
-		: IDENTIFIER
+		: IDENTIFIER 			{result = Terms.new(:IDENTIFIER , val[0])}
 		;
 
 		# Lienzos: define el tipo de los lienzos en LANSCII.
 		Lien
-		: CANVAS
+		: CANVAS				{result = Terms.new(:CANVAS , val[0])}
 		;
 
 		# Numeros: define al tipo de los numeros en LANSCII.
 		Num
-		: NUMBER
+		: NUMBER				{result = Terms.new(:NUMBER , val[0])}
 		;
 
 		# Booleanos: define al tipo de variables booleanas en LANSCII.
 		Bool
-		: TRUE
-		| FALSE
+		: TRUE					{result = Terms.new(:TRUE , val[0])}
+		| FALSE					{result = Terms.new(:FALSE , val[0])}
 		;
 end
 
