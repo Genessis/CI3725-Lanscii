@@ -43,14 +43,19 @@ class Parser
 
 		# Simbolo inicial: define un programa en LANSCII e incorpora el alcance.
 		S
-		: LCURLY Decl PIPE Inst RCURLY	{result = S.new("h","c"); result.printAST()}
-		| LCURLY Inst RCURLY
+		: Scope			{result = S.new(val[0]); result.printAST(0)}
+		;
+
+		# Alcance: le quita la recursividad al simbolo inicial.
+		Scope 
+		: LCURLY Decl PIPE Inst RCURLY			{result = Scope.new(:Inst , val[3])}
+		| LCURLY Inst RCURLY					{result = Scope.new(:Inst , val[1])}
 		;
 
 		# Declaraciones: define las declaraciones en un entorno (alcance).
 		Decl
-		: Type ListI
-		| Decl Type ListI
+		: Type ListI		
+		| Decl Type ListI	
 		;
 
 		# Tipos: define los diferentes tipos de variables presentes en LANSCII.
@@ -69,42 +74,42 @@ class Parser
 		# Instrucciones: define las instrucciones validas asociadas a un programa
 		# => o subprograma en LANSCII.
 		Inst
-		: Inst SEMICOLON Inst
-		| Assign
+		: Inst SEMICOLON Inst 					{result = Instr.new(:INSTR , val[0]), :INSTR , val[2])}
+		| Assign 								{result = Instr.new(:ASSIGN , val[0])}
 #		| Ident EQUALS Expr 	=ASSIGN
-		| READ Var
-		| WRITE Expr
-		| Cond
+		| READ Var 								{result = Instr.new(:READ , val[1])}
+		| WRITE Expr 							{result = Instr.new(:WRITE , val[1])}
+		| Cond 									{result = Instr.new(:COND , val[0])}
 #		| LPARENTHESIS Expr QUESTION_MARK Inst RPARENTHESIS
 #		| LPARENTHESIS Expr QUESTION_MARK Inst COLON Inst RPARENTHESIS
-		| ILoop
+		| ILoop 								{result = Instr.new(:IND_LOOP , val[0])}
 #		| LBRACKET Expr PIPE Inst RBRACKET
-		| DLoop
-#		| LBRACKET Expr TWO_POINTS Expr PIPE Inst RBRACKET
+		| DLoop 								{result = Instr.new(:DET_LOOP , val[0])}
+#		| LBRACKET Expr TWO_POINTS Expr PIPE Inst RBRACKET 
 #		| LBRACKET Ident COLON Expr TWO_POINTS Expr PIPE Inst RBRACKET
-		| S
+		| Scope									{result = Instr.new(:Scope , val[0])}
 		;
 
 		Assign
-		: Var EQUALS Expr
+		: Var EQUALS Expr 						{result = Assign.new(:VARIABLE , val[0], :EXPRESSION, val[2])}
 		;
 
 		Cond
-		: LPARENTHESIS Expr QUESTION_MARK Inst RPARENTHESIS
-		| LPARENTHESIS Expr QUESTION_MARK Inst COLON Inst RPARENTHESIS
+		: LPARENTHESIS Expr QUESTION_MARK Inst RPARENTHESIS 				{result = Cond.new(:CONDITION , val[1], :THEN , val[3])}
+		| LPARENTHESIS Expr QUESTION_MARK Inst COLON Inst RPARENTHESIS		{result = Cond.new(:CONDITION , val[1], :THEN , val[3], :ELSE , val[5])}
 		;
 
 		ILoop
-		: LBRACKET Expr PIPE Inst RBRACKET
+		: LBRACKET Expr PIPE Inst RBRACKET 		{result = ILoop.new(:WHILE , val[1], :DO , val[3])}
 		;
 
 		DLoop
-		: LBRACKET Expr TWO_POINTS Expr PIPE Inst RBRACKET
-		| LBRACKET Var COLON Expr TWO_POINTS Expr PIPE Inst RBRACKET
+		: LBRACKET Expr TWO_POINTS Expr PIPE Inst RBRACKET 				{result = DLoop.new(:VARIABLE, val[1], :EXPRESSION , val[3],:EXPRESSION, val[5])}
+		| LBRACKET Var COLON Expr TWO_POINTS Expr PIPE Inst RBRACKET 	{result = DLoop.new(:VARIABLE, val[1], :EXPRESSION , val[3],:EXPRESSION, val[5], :INSTR , val[7]))}
 		;
 
 		Var
-		: Ident
+		: Ident 		{result = Terms.new(:IDENTIFIER , val[0])}
 		;
 
 	##################################
