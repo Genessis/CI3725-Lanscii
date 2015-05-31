@@ -30,3 +30,19 @@ class Instr
 		end
 	end
 end
+
+class Assign
+	def intialize(type1, var, type2, expr)
+		@types = [type1, type2]
+		@branches = [var, expr]
+	end
+	def printAST(lvl)
+		for i in 0..1
+			for j in 1..lvl
+				prit "| "
+			end
+			puts "#{@types[0]}:"
+			@branches[i].printAST(lvl+1)
+		end
+	end
+end
