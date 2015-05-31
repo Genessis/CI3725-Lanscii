@@ -62,8 +62,8 @@ class Parser
 
 		# Lista de identificadores de variables: define el nombre de variables.
 		ListI
-		: Ident
-		| ListI Ident
+		: Var
+		| ListI Var
 		;
 
 		# Instrucciones: define las instrucciones validas asociadas a un programa
@@ -72,7 +72,7 @@ class Parser
 		: Inst SEMICOLON Inst
 		| Assign
 #		| Ident EQUALS Expr 	=ASSIGN
-		| READ Ident
+		| READ Var
 		| WRITE Expr
 		| Cond
 #		| LPARENTHESIS Expr QUESTION_MARK Inst RPARENTHESIS
@@ -86,7 +86,7 @@ class Parser
 		;
 
 		Assign
-		: Ident EQUALS Expr
+		: Var EQUALS Expr
 		;
 
 		Cond
@@ -100,7 +100,11 @@ class Parser
 
 		DLoop
 		: LBRACKET Expr TWO_POINTS Expr PIPE Inst RBRACKET
-		| LBRACKET Ident COLON Expr TWO_POINTS Expr PIPE Inst RBRACKET
+		| LBRACKET Var COLON Expr TWO_POINTS Expr PIPE Inst RBRACKET
+		;
+
+		Var
+		: Ident
 		;
 
 	##################################
