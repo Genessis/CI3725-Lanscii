@@ -77,6 +77,25 @@ class Write
 	end
 end
 
+class Cond
+	# Donde type1 es :CONDITION, type2 es :THEN y tpy3 puede ser :ELSE
+	def initialize(type1, expr, type2, inst1, type3=nil, inst2=nil)
+		@types = [type1, type2, type3]
+		@elems = [expr, inst1, inst2]
+	end
+	def printAST(lvl)
+		for i in 0..2
+			if @types[i] != nil
+				for i in 1..lvl
+					print "| "
+				end
+				puts "#{@types[i]}:"
+				@elems[i].printAST(lvl+1)
+			end
+		end
+	end
+end
+
 class Terms
 	def initialize(nameTerm, term)
 		@opID = nameTerm
