@@ -141,7 +141,7 @@ class Parser
 		: Bool
 		| Num 
 		| Lien
-		| Ident
+		| Var
 		;
 
 		# Identificador: define el nombre de variables en LANSCII.
