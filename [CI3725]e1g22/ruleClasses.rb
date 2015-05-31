@@ -156,8 +156,7 @@ end
 class BinExp
 	# Donde type0 es :OPERATION, op puede ser +, -, *, /, %, ~, \/, /\, <, <=,
 	# >, >=, =, ' o &, type1 y type2 son :EXPRESSION y expr1 y expr2 son expresiones
-	def initialize(op, type1, expr1, type2, expr2)
-		@types = [type1, type2]
+	def initialize(op, expr1, expr2)
 		@elemes = [expr1, expr2]
 		@op = op
 	end
@@ -165,7 +164,7 @@ class BinExp
 		for i in 1..lvl
 			print "| "
 		end
-		puts "#{@type[0]}: #{op}"
+		puts "OPERATION: #{op}"
 		@elems.each do |elem|
 			elem.printAST(lvl+1)
 		end
@@ -173,11 +172,9 @@ class BinExp
 end
 
 class UnaExp
-	def initialize(op, type1, expr1)
+	def initialize(op, type, expr)
 		
-	end
-	
-	
+	end	
 end
 
 
