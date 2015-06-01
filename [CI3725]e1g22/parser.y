@@ -109,7 +109,7 @@ class Parser
 		;
 
 		Var
-		: Ident 		{result = Terms.new(:IDENTIFIER , val[0])}
+		: Ident 	
 		;
 
 	##################################
