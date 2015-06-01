@@ -10,7 +10,7 @@
  *			Genessis Sanchez	11-10935
  *          Daniela Socas		11-10979
  *
- *  Último midificación: 31 Mayo de 2015
+ *  Última modificación: 31 Mayo de 2015
 =end
 
 require './lexer.rb'
@@ -21,6 +21,13 @@ file = File.open(file_name, "r")
 lexer = Lexer.new
 if (lexer.identifier(file))
 	parser = Parser.new(lexer)
-	parser.parse
+
+	begin
+		parser.parse
+
+	rescue => e
+		Error = SyntaxError.new()
+		puts "Error sintáctico: #{e}"
+	end
 end
 file.close
