@@ -1,8 +1,22 @@
+=begin
+ *  UNIVERSIDAD SIMÓN BOLÍVAR
+ *  Archivo: parser.y
+ *
+ *  Contenido:
+ *          Gramatica libre de contexto (con atributos) de LANSCII para la herrmamienta RACC. *
+ *  Creado por:
+ *			Genessis Sanchez	11-10935
+ *          Daniela Socas		11-10979
+ *
+ *  Último midificación: 31 Mayo de 2015
+=end
+
+
 class Parser
 
 	# Define la precedencia de los tokens o expresiones en LANSCII.
 	# El orden de precedencia fue basada en el siguiente link:
-	# http://help.adobe.com/es_ES/AS2LCR/Flash_10.0/help.html?content=00000115.html
+	
 	prechigh
 
 		nonassoc PRNTS
@@ -74,40 +88,39 @@ class Parser
 		# Instrucciones: define las instrucciones validas asociadas a un programa
 		# => o subprograma en LANSCII.
 		Inst
-		: Inst SEMICOLON Inst 					{result = Instr.new(:INSTR , val[0], :INSTR , val[2])}
-		| Assign 								{result = Instr.new(:ASSIGN , val[0])}
-#		| Ident EQUALS Expr 	=ASSIGN
-		| READ Var 								{result = Instr.new(:READ , val[1])}
-		| WRITE Expr 							{result = Instr.new(:WRITE , val[1])}
-		| Cond 									{result = Instr.new(:CONDITIONAL_STATEMENT , val[0])}
-#		| LPARENTHESIS Expr QUESTION_MARK Inst RPARENTHESIS
-#		| LPARENTHESIS Expr QUESTION_MARK Inst COLON Inst RPARENTHESIS
-		| ILoop 								{result = Instr.new(:IND_LOOP , val[0])}
-#		| LBRACKET Expr PIPE Inst RBRACKET
-		| DLoop 								{result = Instr.new(:DET_LOOP , val[0])}
-#		| LBRACKET Expr TWO_POINTS Expr PIPE Inst RBRACKET 
-#		| LBRACKET Ident COLON Expr TWO_POINTS Expr PIPE Inst RBRACKET
-		| Scope									{result = Instr.new(:Scope , val[0])}
+		: Inst SEMICOLON Inst 					{result = Instr.new(:INSTR, val[0], :INSTR, val[2])}
+		| Assign 								{result = Instr.new(:ASSIGN, val[0])}
+		| READ Var 								{result = Instr.new(:READ, val[1])}
+		| WRITE Expr 							{result = Instr.new(:WRITE, val[1])}
+		| Cond 									{result = Instr.new(:CONDITIONAL_STATEMENT, val[0])}
+		| ILoop 								{result = Instr.new(:IND_LOOP, val[0])}
+		| DLoop 								{result = Instr.new(:DET_LOOP, val[0])}
+		| Scope									{result = Instr.new(:Scope, val[0])}
 		;
 
+		# Asignacion: define la regla para asignar.
 		Assign
-		: Var EQUALS Expr 						{result = Assign.new(:VARIABLE , val[0], :EXPRESSION, val[2])}
+		: Var EQUALS Expr 						{result = Assign.new(:VARIABLE, val[0], :EXPRESSION, val[2])}
 		;
 
+		# Condicional: define las reglas para instrucciones condicionales.
 		Cond
-		: LPARENTHESIS Expr QUESTION_MARK Inst RPARENTHESIS 				{result = Cond.new(:CONDITION , val[1], :THEN , val[3])}
-		| LPARENTHESIS Expr QUESTION_MARK Inst COLON Inst RPARENTHESIS		{result = Cond.new(:CONDITION , val[1], :THEN , val[3], :ELSE , val[5])}
+		: LPARENTHESIS Expr QUESTION_MARK Inst RPARENTHESIS 				{result = Cond.new(:CONDITION, val[1], :THEN, val[3])}
+		| LPARENTHESIS Expr QUESTION_MARK Inst COLON Inst RPARENTHESIS		{result = Cond.new(:CONDITION, val[1], :THEN, val[3], :ELSE, val[5])}
 		;
 
+		# Ciclos indeterminados: define la regla para ciclos indeterminados.
 		ILoop
-		: LBRACKET Expr PIPE Inst RBRACKET 		{result = ILoop.new(:WHILE , val[1], :DO , val[3])}
+		: LBRACKET Expr PIPE Inst RBRACKET 		{result = ILoop.new(:WHILE, val[1], :DO, val[3])}
 		;
 
+		# Ciclos determinados: define las reglas para los ciclos indeterminados.
 		DLoop
-		: LBRACKET Expr TWO_POINTS Expr PIPE Inst RBRACKET 				{result = DLoop.new(:VARIABLE, val[1], :EXPRESSION , val[3],:EXPRESSION, val[5])}
-		| LBRACKET Var COLON Expr TWO_POINTS Expr PIPE Inst RBRACKET 	{result = DLoop.new(:VARIABLE, val[1], :EXPRESSION , val[3],:EXPRESSION, val[5], :INSTR , val[7])}
+		: LBRACKET Expr TWO_POINTS Expr PIPE Inst RBRACKET 				{result = DLoop.new(:VARIABLE, val[1], :EXPRESSION, val[3], :EXPRESSION, val[5])}
+		| LBRACKET Var COLON Expr TWO_POINTS Expr PIPE Inst RBRACKET 	{result = DLoop.new(:VARIABLE, val[1], :EXPRESSION, val[3], :EXPRESSION, val[5], :INSTR, val[7])}
 		;
 
+		# Variables: efine la regla para las variables.
 		Var
 		: Ident 	
 		;
@@ -119,26 +132,26 @@ class Parser
 		# Expresiones: define todas las expresiones recursivas en LANSCII.
 		Expr 													
 		: Term 												
-		| Expr PLUS Expr 									{result = BinExp.new( "+", val[0], val[2])}
-		| Expr MINUS Expr 									{result = BinExp.new( "-", val[0], val[2])}
-		| Expr MULTIPLY Expr 								{result = BinExp.new( "*", val[0], val[2])}
-		| Expr DIVISION Expr 								{result = BinExp.new( "/", val[0], val[2])}
-		| Expr PERCENT Expr 								{result = BinExp.new( "%", val[0], val[2])}
-		| MINUS Expr 	=UMINUS   							{result = UnaExp.new( "-" , val[0])}
-		| LPARENTHESIS Expr RPARENTHESIS =PRNTS 			{result = ParExp.new( :EXPRESSION , val[1])}
-		| Expr OR Expr   									{result = BinExp.new( "\/" , val[1])}
-		| Expr AND Expr 									{result = BinExp.new( "/\\", val[0], val[2])}
-		| Expr NEGATION 									{result = UnaExp.new( "-", val[0], val[2])}
-		| Expr LESS_THAN Expr 								{result = BinExp.new( "<", val[0], val[2])}
-		| Expr GREATER_THAN Expr 							{result = BinExp.new( ">", val[0], val[2])}
-		| Expr LESS_OR_EQUAL Expr 							{result = BinExp.new( "<=", val[0], val[2])}
-		| Expr GREATER_OR_EQUAL Expr 						{result = BinExp.new( ">=", val[0], val[2])}
-		| Expr EQUALS Expr 									{result = BinExp.new( "=", val[0], val[2])}
-		| Expr NOT_EQUAL Expr 								{result = BinExp.new( "!=", val[0], val[2])}
-		| Expr TILDE Expr 									{result = BinExp.new( "~", val[0], val[2])}
-		| Expr ET Expr 										{result = BinExp.new( "&", val[0], val[2])}
-		| ROTATION Expr 									{result = UnaExp.new( "$", val[1])}
-		| Expr TRANSPOSITION 								{result = UnaExp.new( "'", val[0])}
+		| Expr PLUS Expr 									{result = BinExp.new("+", val[0], val[2])}
+		| Expr MINUS Expr 									{result = BinExp.new("-", val[0], val[2])}
+		| Expr MULTIPLY Expr 								{result = BinExp.new("*", val[0], val[2])}
+		| Expr DIVISION Expr 								{result = BinExp.new("/", val[0], val[2])}
+		| Expr PERCENT Expr 								{result = BinExp.new("%", val[0], val[2])}
+		| MINUS Expr 	=UMINUS   							{result = UnaExp.new("-", val[0])}
+		| LPARENTHESIS Expr RPARENTHESIS =PRNTS 			{result = ParExp.new(:EXPRESSION, val[1])}
+		| Expr OR Expr   									{result = BinExp.new("\/", val[1])}
+		| Expr AND Expr 									{result = BinExp.new("/\\", val[0], val[2])}
+		| Expr NEGATION 									{result = UnaExp.new("-", val[0], val[2])}
+		| Expr LESS_THAN Expr 								{result = BinExp.new("<", val[0], val[2])}
+		| Expr GREATER_THAN Expr 							{result = BinExp.new(">", val[0], val[2])}
+		| Expr LESS_OR_EQUAL Expr 							{result = BinExp.new("<=", val[0], val[2])}
+		| Expr GREATER_OR_EQUAL Expr 						{result = BinExp.new(">=", val[0], val[2])}
+		| Expr EQUALS Expr 									{result = BinExp.new("=", val[0], val[2])}
+		| Expr NOT_EQUAL Expr 								{result = BinExp.new("!=", val[0], val[2])}
+		| Expr TILDE Expr 									{result = BinExp.new("~", val[0], val[2])}
+		| Expr ET Expr 										{result = BinExp.new("&", val[0], val[2])}
+		| ROTATION Expr 									{result = UnaExp.new("$", val[1])}
+		| Expr TRANSPOSITION 								{result = UnaExp.new("'", val[0])}
 		;
 
 		# Expresiones básicas: definen todas las expresiones hoja en LANSCII.
@@ -151,23 +164,23 @@ class Parser
 
 		# Identificador: define el nombre de variables en LANSCII.
 		Ident
-		: IDENTIFIER 			{result = Terms.new(:IDENTIFIER , val[0])}
+		: IDENTIFIER 			{result = Terms.new(:IDENTIFIER, val[0])}
 		;
 
 		# Lienzos: define el tipo de los lienzos en LANSCII.
 		Lien
-		: CANVAS				{result = Terms.new(:CANVAS , val[0])}
+		: CANVAS				{result = Terms.new(:CANVAS, val[0])}
 		;
 
 		# Numeros: define al tipo de los numeros en LANSCII.
 		Num
-		: NUMBER				{result = Terms.new(:NUMBER , val[0])}
+		: NUMBER				{result = Terms.new(:NUMBER, val[0])}
 		;
 
 		# Booleanos: define al tipo de variables booleanas en LANSCII.
 		Bool
-		: TRUE					{result = Terms.new(:TRUE , val[0])}
-		| FALSE					{result = Terms.new(:FALSE , val[0])}
+		: TRUE					{result = Terms.new(:TRUE, val[0])}
+		| FALSE					{result = Terms.new(:FALSE, val[0])}
 		;
 end
 

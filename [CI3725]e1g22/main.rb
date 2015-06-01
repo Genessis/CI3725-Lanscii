@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 =begin
  *  UNIVERSIDAD SIMÓN BOLÍVAR
  *  Archivo: main.rb
@@ -9,7 +10,7 @@
  *			Genessis Sanchez	11-10935
  *          Daniela Socas		11-10979
  *
- *  Último midificación: 27 Mayo de 2015
+ *  Último midificación: 31 Mayo de 2015
 =end
 
 require './lexer.rb'

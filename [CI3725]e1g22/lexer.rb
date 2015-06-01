@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 =begin
  *  UNIVERSIDAD SIMÓN BOLÍVAR
  *  Archivo: lexer.rb

@@ -1,3 +1,18 @@
+#!/usr/bin/env ruby
+=begin
+ *  UNIVERSIDAD SIMÓN BOLÍVAR
+ *  Archivo: ruleClasses.rb
+ *
+ *  Contenido:
+ *          Clases para imprimir el AST de LANSCII
+ *
+ *  Creado por:
+ *			Genessis Sanchez	11-10935
+ *          Daniela Socas		11-10979
+ *
+ *  Último midificación: 31 Mayo de 2015
+=end
+
 #####################################
 # Clases asociadas a instrucciones. #
 #####################################
