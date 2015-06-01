@@ -102,7 +102,7 @@ class Cond
 	def printAST(lvl)
 		for i in 0..2
 			if @types[i] != nil
-				for i in 1..lvl
+				for j in 1..lvl
 					print "| "
 				end
 				puts "#{@types[i]}:"
@@ -125,7 +125,7 @@ class ILoop
 				print "| "
 			end
 			puts "#{@types[i]}:"
-			@elems.printAST(lvl+1)
+			@elems[i].printAST(lvl+1)
 		end		
 	end
 end
@@ -140,7 +140,7 @@ class DLoop
 	end
 	def printAST(lvl)
 		for i in 0..3
-			if (elem[i] != nil)
+			if (@elems[i] != nil)
 				for j in 1..lvl
 					print "| "
 				end
@@ -217,20 +217,3 @@ class Terms
 		end 
 	end
 end
-
-#term = Terms.new(:IDENTIFIER, "x")
-#var = Terms.new(:NUMBER, "4")
-#expbin = BinExp.new("+", term, var)
-#expbin2 = BinExp.new("*", term, expbin)
-#par = ParExp.new(:EXPRESSION, expbin2)
-##par.printAST(3)
-#unex = UnaExp.new("$", par)
-##unex.printAST(2)
-#expbin3 = BinExp.new("~", unex, term)
-##expbin3.printAST(1)
-#as = Assign.new(:VARIABLE, term, :EXPRESSION, expbin3)
-##as.printAST(0)
-#ins = Instr.new(:ASSIGN, as)
-#scop = Scope.new(ins)
-#s = S.new(scop)
-#s.printAST(0)
