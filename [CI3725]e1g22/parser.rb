@@ -509,7 +509,7 @@ module_eval(<<'.,.,', 'parser.y', 80)
 
 module_eval(<<'.,.,', 'parser.y', 81)
   def _reduce_15(val, _values, result)
-    result = Instr.new(:COND , val[0])
+    result = Instr.new(:CONDITIONAL_STATEMENT , val[0])
     result
   end
 .,.,

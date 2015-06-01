@@ -79,7 +79,7 @@ class Parser
 #		| Ident EQUALS Expr 	=ASSIGN
 		| READ Var 								{result = Instr.new(:READ , val[1])}
 		| WRITE Expr 							{result = Instr.new(:WRITE , val[1])}
-		| Cond 									{result = Instr.new(:COND , val[0])}
+		| Cond 									{result = Instr.new(:CONDITIONAL_STATEMENT , val[0])}
 #		| LPARENTHESIS Expr QUESTION_MARK Inst RPARENTHESIS
 #		| LPARENTHESIS Expr QUESTION_MARK Inst COLON Inst RPARENTHESIS
 		| ILoop 								{result = Instr.new(:IND_LOOP , val[0])}
