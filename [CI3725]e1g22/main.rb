@@ -27,7 +27,7 @@ if (lexer.identifier(file))
 
 	rescue => e
 		Error = SyntaxError.new()
-		puts "Error sintáctico: #{e}"
+		puts "Error sintactico: #{e}"
 	end
 end
 file.close

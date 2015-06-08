@@ -1,8 +1,21 @@
+#!/usr/bin/env ruby
+
+# *  UNIVERSIDAD SIMÓN BOLÍVAR
+# *  Archivo: parser.y
+# *
+# *  Contenido:
+# *          Gramatica libre de contexto (con atributos) de LANSCII
+# *
+# *  Creado por:
+# *			Genessis Sanchez	11-10935
+# *          Daniela Socas		11-10979
+# *
+# *  Último midificación: 31 Mayo de 2015
+
+
 class Parser
 
 	# Define la precedencia de los tokens o expresiones en LANSCII.
-	# El orden de precedencia fue basada en el siguiente link:
-	# http://help.adobe.com/es_ES/AS2LCR/Flash_10.0/help.html?content=00000115.html
 	prechigh
 
 		nonassoc PRNTS
@@ -76,17 +89,11 @@ class Parser
 		Inst
 		: Inst SEMICOLON Inst 					{result = Instr.new(:INSTR , val[0], :INSTR , val[2])}
 		| Assign 								{result = Instr.new(:ASSIGN , val[0])}
-#		| Ident EQUALS Expr 	=ASSIGN
 		| READ Var 								{result = Instr.new(:READ , val[1])}
 		| WRITE Expr 							{result = Instr.new(:WRITE , val[1])}
 		| Cond 									{result = Instr.new(:CONDITIONAL_STATEMENT , val[0])}
-#		| LPARENTHESIS Expr QUESTION_MARK Inst RPARENTHESIS
-#		| LPARENTHESIS Expr QUESTION_MARK Inst COLON Inst RPARENTHESIS
 		| ILoop 								{result = Instr.new(:IND_LOOP , val[0])}
-#		| LBRACKET Expr PIPE Inst RBRACKET
 		| DLoop 								{result = Instr.new(:DET_LOOP , val[0])}
-#		| LBRACKET Expr TWO_POINTS Expr PIPE Inst RBRACKET 
-#		| LBRACKET Ident COLON Expr TWO_POINTS Expr PIPE Inst RBRACKET
 		| Scope									{result = Instr.new(:Scope , val[0])}
 		;
 
@@ -104,7 +111,7 @@ class Parser
 		;
 
 		DLoop
-		: LBRACKET Expr TWO_POINTS Expr PIPE Inst RBRACKET 				{result = DLoop.new(:VARIABLE, val[1], :EXPRESSION , val[3],:EXPRESSION, val[5])}
+		: LBRACKET Expr TWO_POINTS Expr PIPE Inst RBRACKET 				{result = DLoop.new(:EXPRESSION, val[1], :EXPRESSION , val[3],:INSTR, val[5], nil, nil)}
 		| LBRACKET Var COLON Expr TWO_POINTS Expr PIPE Inst RBRACKET 	{result = DLoop.new(:VARIABLE, val[1], :EXPRESSION , val[3],:EXPRESSION, val[5], :INSTR , val[7])}
 		;
 
@@ -119,26 +126,26 @@ class Parser
 		# Expresiones: define todas las expresiones recursivas en LANSCII.
 		Expr 													
 		: Term 												
-		| Expr PLUS Expr 									{result = BinExp.new( "+", val[0], val[2])}
-		| Expr MINUS Expr 									{result = BinExp.new( "-", val[0], val[2])}
-		| Expr MULTIPLY Expr 								{result = BinExp.new( "*", val[0], val[2])}
-		| Expr DIVISION Expr 								{result = BinExp.new( "/", val[0], val[2])}
-		| Expr PERCENT Expr 								{result = BinExp.new( "%", val[0], val[2])}
-		| MINUS Expr 	=UMINUS   							{result = UnaExp.new( "-" , val[0])}
-		| LPARENTHESIS Expr RPARENTHESIS =PRNTS 			{result = ParExp.new( :EXPRESSION , val[1])}
-		| Expr OR Expr   									{result = BinExp.new( "\/" , val[1])}
-		| Expr AND Expr 									{result = BinExp.new( "/\\", val[0], val[2])}
-		| Expr NEGATION 									{result = UnaExp.new( "-", val[0], val[2])}
-		| Expr LESS_THAN Expr 								{result = BinExp.new( "<", val[0], val[2])}
-		| Expr GREATER_THAN Expr 							{result = BinExp.new( ">", val[0], val[2])}
-		| Expr LESS_OR_EQUAL Expr 							{result = BinExp.new( "<=", val[0], val[2])}
-		| Expr GREATER_OR_EQUAL Expr 						{result = BinExp.new( ">=", val[0], val[2])}
-		| Expr EQUALS Expr 									{result = BinExp.new( "=", val[0], val[2])}
-		| Expr NOT_EQUAL Expr 								{result = BinExp.new( "!=", val[0], val[2])}
-		| Expr TILDE Expr 									{result = BinExp.new( "~", val[0], val[2])}
-		| Expr ET Expr 										{result = BinExp.new( "&", val[0], val[2])}
-		| ROTATION Expr 									{result = UnaExp.new( "$", val[1])}
-		| Expr TRANSPOSITION 								{result = UnaExp.new( "'", val[0])}
+		| Expr PLUS Expr 									{result = BinExp.new("+", val[0], val[2])}
+		| Expr MINUS Expr 									{result = BinExp.new("-", val[0], val[2])}
+		| Expr MULTIPLY Expr 								{result = BinExp.new("*", val[0], val[2])}
+		| Expr DIVISION Expr 								{result = BinExp.new("/", val[0], val[2])}
+		| Expr PERCENT Expr 								{result = BinExp.new("%", val[0], val[2])}
+		| MINUS Expr 	=UMINUS   							{result = UnaExp.new("-" , val[1])}
+		| LPARENTHESIS Expr RPARENTHESIS =PRNTS 			{result = ParExp.new(:EXPRESSION , val[1])}
+		| Expr OR Expr   									{result = BinExp.new("\/" , val[1])}
+		| Expr AND Expr 									{result = BinExp.new("/\\", val[0], val[2])}
+		| Expr NEGATION 									{result = UnaExp.new("^", val[0])}
+		| Expr LESS_THAN Expr 								{result = BinExp.new("<", val[0], val[2])}
+		| Expr GREATER_THAN Expr 							{result = BinExp.new(">", val[0], val[2])}
+		| Expr LESS_OR_EQUAL Expr 							{result = BinExp.new("<=", val[0], val[2])}
+		| Expr GREATER_OR_EQUAL Expr 						{result = BinExp.new(">=", val[0], val[2])}
+		| Expr EQUALS Expr 									{result = BinExp.new("=", val[0], val[2])}
+		| Expr NOT_EQUAL Expr 								{result = BinExp.new("!=", val[0], val[2])}
+		| Expr TILDE Expr 									{result = BinExp.new("~", val[0], val[2])}
+		| Expr ET Expr 										{result = BinExp.new("&", val[0], val[2])}
+		| ROTATION Expr 									{result = UnaExp.new("$", val[1])}
+		| Expr TRANSPOSITION 								{result = UnaExp.new("'", val[0])}
 		;
 
 		# Expresiones básicas: definen todas las expresiones hoja en LANSCII.
