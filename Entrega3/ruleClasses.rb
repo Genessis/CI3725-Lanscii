@@ -10,7 +10,7 @@
  *			Genessis Sanchez	11-10935
  *          Daniela Socas		11-10979
  *
- *  Último midificación: 31 Mayo de 2015
+ *  Último midificación: 13 de junio de 2015
 =end
 
 #####################################
@@ -53,13 +53,6 @@ class Decl
 		@decl = decl 
 	end	
 end
-
-#class Type
-#	attr_accessor :type
-#	def initialize(type)
-#		@type = type
-#	end	
-#end
 
 class ListI
 	# Donde id es de la clase Terms (:IDENTIFIER) y listI es de la clase ListI

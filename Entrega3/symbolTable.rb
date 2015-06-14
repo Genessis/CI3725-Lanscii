@@ -10,7 +10,7 @@
  *			Genessis Sanchez	11-10935
  *          Daniela Socas		11-10979
  *
- *  Último midificación: 9 de junio de 2015
+ *  Último midificación: 13 de junio de 2015
 =end
 
 class SymbolTable
@@ -61,6 +61,7 @@ class SymbolTable
 	end
 
 	def print_Table
+		puts
 		puts @symTable
 	end
 end
