@@ -77,6 +77,8 @@ def instr_Handler(instr)
 		conditional_statment_Handler(instr.branches[0])
 	when :IND_LOOP
 		iLoop_Handler(instr.branches[0])
+	when :DET_LOOP
+		dLoop_Handler(instr.branches[0])
 	end
 end
 
@@ -147,6 +149,24 @@ def iLoop_Handler(iLoop)
 	instr = iLoop.elems[1]
 	instr_Handler(instr)
 	return 0
+end
+
+def dLoop_Handler(dLoop)
+	if (dLoop.types[0] == :VARIABLE)
+		puts "jeje"
+	else
+		expr1 = dLoop.elems[0]
+		typeExpr1 = expression_Handler(expr1)
+		expr2 = dLoop.elems[1]
+		typeExpr2 = expression_Handler(expr2)
+		if (typeExpr1 != :NUMBER) or (typeExpr2 != :NUMBER)
+			puts "DET LOOP ERROR: expressions must be arithmetic."
+			return 1
+		end
+		instr = dLoop.elems[2]
+		instr_Handler(instr)
+		return 0
+	end
 end
 
 ##########################################

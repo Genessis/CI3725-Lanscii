@@ -188,10 +188,12 @@ class ILoop
 end
 
 class DLoop
+	attr_accessor :types
+	attr_accessor :elems
 	# Donde type1 es :VARIABLE, type2 y type3 son :EXPRESSION y type4 es :INSTR
 	# Donde var es de la clase Var, expr1 y expr2 son de la clase Expr e
 	# => inst es de la clase Instr
-	def initialize(type1, var, type2, expr1, type3, expr2, type4, inst)
+	def initialize(type1, var, type2, expr1, type3, expr2, type4=nil, inst=nil)
 		@types = [type1, type2, type3, type4]
 		@elems = [var, expr1, expr2, inst]		
 	end
