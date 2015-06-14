@@ -85,8 +85,7 @@ def expression_Handler(expr)
 		return binExp_Handler(expr)
 	# Procesar como unaria
 	elsif expr.instance_of?(UnaExp)
-		unaExp_Handler(expr)
-		return true
+		return unaExp_Handler(expr)
 	# Procesar como parentizada
 	elsif expr.instance_of?(ParExp)
 		return parExp_Handler(expr)
@@ -120,14 +119,12 @@ def binExp_Handler(expr)
 	end
 	case expr.op
 	when /^\/\\/
-		puts "Entre en y"
 		if typeExpr1 == :BOOLEAN
 			return :BOOLEAN
 		else
 			return nil
 		end
 	when /^\\\//
-		puts "Entre en o"
 		if typeExpr1 == :BOOLEAN
 			return :BOOLEAN
 		else
@@ -159,7 +156,7 @@ def parExp_Handler(expr)
 end
 
 def unaExp_Handler(expr)
-	typeExpr = expression_Handler(expr.expr)
+	typeExpr = expression_Handler(expr.elem)
 	case expr.op
 	when /^[$']/
 		if typeExpr == :CANVAS
@@ -175,7 +172,7 @@ def unaExp_Handler(expr)
 		end
 	when /-/
 		if typeExpr == :NUMBER
-			return :BUMBER
+			return :NUMBER
 		else
 			return nil
 		end

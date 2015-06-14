@@ -229,7 +229,7 @@ class BinExp
 end
 
 class UnaExp
-	attr_accessor :expr
+	attr_accessor :elem
 	attr_accessor :op
 	def initialize(op, expr)
 		@elem = expr
