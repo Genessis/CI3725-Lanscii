@@ -75,6 +75,8 @@ def instr_Handler(instr)
 		write_Handler(instr)
 	when :CONDITIONAL_STATEMENT
 		conditional_statment_Handler(instr.branches[0])
+	when :IND_LOOP
+		iLoop_Handler(instr.branches[0])
 	end
 end
 
@@ -124,7 +126,7 @@ end
 def conditional_statment_Handler(cs)
 	expr = cs.elems[0]
 	if (expression_Handler(expr) != :BOOLEAN)
-		puts "CONDITIONAL STATEMENT ERRROR: expression must be boolean."
+		puts "CONDITIONAL STATEMENT ERROR: expression must be boolean."
 		return 1
 	end
 	instr1 = cs.elems[1]
@@ -133,6 +135,17 @@ def conditional_statment_Handler(cs)
 		instr2 = cs.elems[2]
 		instr_Handler(instr2)
 	end
+	return 0
+end
+
+def iLoop_Handler(iLoop)
+	expr = iLoop.elems[0]
+	if (expression_Handler(expr) != :BOOLEAN)
+		puts "IND LOOP ERROR: expression must be boolean."
+		return 1
+	end
+	instr = iLoop.elems[1]
+	instr_Handler(instr)
 	return 0
 end
 

@@ -168,6 +168,8 @@ class Cond
 end
 
 class ILoop
+	attr_accessor :types
+	attr_accessor :elems
 	# Donde type1 es :WHILE y type2 es :DO
 	# Donde expr es de la clase Expr e inst es de la clase Instr
 	def initialize(type1, expr, type2, inst)
