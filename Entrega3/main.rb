@@ -45,7 +45,7 @@ lexer = Lexer.new
 if (lexer.identifier(file))
 	parser = Parser.new(lexer)
 	ast = parser.parse
-	ast.printAST(0)
+#	ast.printAST(0)
 	program_Handler(ast)
 #	begin
 #		parser.parse

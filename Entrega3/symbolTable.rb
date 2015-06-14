@@ -15,13 +15,11 @@
 
 class SymbolTable
 
-#	attr_accessor :symTable
 	attr_accessor :father
-	attr_accessor :id
+
 	def initialize(id, father = nil)
 		@symTable = Hash.new
 		@father = father
-		@id = id
 	end
 	
 	def insert(key, values)
@@ -60,5 +58,9 @@ class SymbolTable
 		else
 			return @symTable[key]
 		end
+	end
+
+	def print_Table
+		puts @symTable
 	end
 end

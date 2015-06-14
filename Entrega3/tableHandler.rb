@@ -32,6 +32,7 @@ def scope_Handler(scope)
 	$symTable = symTableAux
 	decl_Handler(scope.decl)
 	instr_Handler(scope.inst)
+	$symTable.print_Table
 	$symTable = $symTable.father
 end
 
@@ -83,6 +84,8 @@ def instr_Handler(instr, iterVar=nil)
 		iLoop_Handler(instr.branches[0])
 	when :DET_LOOP
 		dLoop_Handler(instr.branches[0])
+	when :SCOPE
+		scope_Handler(instr.branches[0])
 	end
 end
 

@@ -117,34 +117,6 @@ class Assign
 	end
 end
 
-#class Read
-#	def initialize(instID, var)
-#		@instID = instID	# Donde intID es :READ
-#		@var = var 	# Donde Var es clase Var
-#	end
-#	def printAST(lvl)
-#		for i in 1..lvl
-#			print "| "
-#		end
-#		puts "#{@instID}"
-#		@var.printAST(lvl+1)
-#	end
-#end
-#
-#class Write
-#	def initialize(instID,expr)
-#		@instID = instID	# Donde intID es :WRITE
-#		@expr = expr 	# Donde Var es clase Var
-#	end
-#	def printAST(lvl)
-#		for i in 1..lvl
-#			print "| "
-#		end
-#		puts "#{@instID} :"
-#		@expr.printAST(lvl+1)
-#	end
-#end
-
 class Cond
 	attr_accessor :types
 	attr_accessor :elems
