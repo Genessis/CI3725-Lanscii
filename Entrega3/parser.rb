@@ -11,6 +11,7 @@ module_eval(<<'...end parser.y/module_eval...', 'parser.y', 182)
 
 require './lexer.rb'
 require './ruleClasses.rb'
+require './symbolTable.rb'
 
 def initialize(lexer)
 	@lexer = lexer
@@ -253,13 +254,13 @@ racc_reduce_table = [
   1, 44, :_reduce_1,
   5, 45, :_reduce_2,
   3, 45, :_reduce_3,
-  2, 46, :_reduce_none,
-  3, 46, :_reduce_none,
-  1, 48, :_reduce_none,
-  1, 48, :_reduce_none,
-  1, 48, :_reduce_none,
-  1, 49, :_reduce_none,
-  2, 49, :_reduce_none,
+  2, 46, :_reduce_4,
+  3, 46, :_reduce_5,
+  1, 48, :_reduce_6,
+  1, 48, :_reduce_7,
+  1, 48, :_reduce_8,
+  1, 49, :_reduce_9,
+  2, 49, :_reduce_10,
   3, 47, :_reduce_11,
   1, 47, :_reduce_12,
   2, 47, :_reduce_13,
@@ -444,40 +445,75 @@ Racc_debug_parser = false
 
 # reduce 0 omitted
 
-module_eval(<<'.,.,', 'parser.y', 58)
+module_eval(<<'.,.,', 'parser.y', 59)
   def _reduce_1(val, _values, result)
-    result = S.new(val[0]); result.printAST(0)
-    result
-  end
-.,.,
-
-module_eval(<<'.,.,', 'parser.y', 63)
-  def _reduce_2(val, _values, result)
-    result = Scope.new(val[3])
+    result = S.new(val[0]); return result
     result
   end
 .,.,
 
 module_eval(<<'.,.,', 'parser.y', 64)
+  def _reduce_2(val, _values, result)
+    result = Scope.new(val[3], val[1])
+    result
+  end
+.,.,
+
+module_eval(<<'.,.,', 'parser.y', 65)
   def _reduce_3(val, _values, result)
     result = Scope.new(val[1])
     result
   end
 .,.,
 
-# reduce 4 omitted
+module_eval(<<'.,.,', 'parser.y', 69)
+  def _reduce_4(val, _values, result)
+    result = Decl.new(val[0], val[1])
+    result
+  end
+.,.,
 
-# reduce 5 omitted
+module_eval(<<'.,.,', 'parser.y', 70)
+  def _reduce_5(val, _values, result)
+    result = Decl.new(val[1], val[2], val[0])
+    result
+  end
+.,.,
 
-# reduce 6 omitted
+module_eval(<<'.,.,', 'parser.y', 75)
+  def _reduce_6(val, _values, result)
+    result = :AT
+    result
+  end
+.,.,
 
-# reduce 7 omitted
+module_eval(<<'.,.,', 'parser.y', 76)
+  def _reduce_7(val, _values, result)
+    result = :EXCLAMATION_MARK
+    result
+  end
+.,.,
 
-# reduce 8 omitted
+module_eval(<<'.,.,', 'parser.y', 77)
+  def _reduce_8(val, _values, result)
+    result = :PERCENT
+    result
+  end
+.,.,
 
-# reduce 9 omitted
+module_eval(<<'.,.,', 'parser.y', 82)
+  def _reduce_9(val, _values, result)
+    result = ListI.new(val[0])
+    result
+  end
+.,.,
 
-# reduce 10 omitted
+module_eval(<<'.,.,', 'parser.y', 83)
+  def _reduce_10(val, _values, result)
+    result = ListI.new(val[1], val[0])
+    result
+  end
+.,.,
 
 module_eval(<<'.,.,', 'parser.y', 89)
   def _reduce_11(val, _values, result)
@@ -530,7 +566,7 @@ module_eval(<<'.,.,', 'parser.y', 95)
 
 module_eval(<<'.,.,', 'parser.y', 96)
   def _reduce_18(val, _values, result)
-    result = Instr.new(:Scope , val[0])
+    result = Instr.new(:SCOPE , val[0])
     result
   end
 .,.,
@@ -632,7 +668,7 @@ module_eval(<<'.,.,', 'parser.y', 134)
 
 module_eval(<<'.,.,', 'parser.y', 135)
   def _reduce_34(val, _values, result)
-    result = BinExp.new("\/" , val[1])
+    result = BinExp.new("\\/" , val[0], val[2])
     result
   end
 .,.,

@@ -19,6 +19,7 @@
 
 class S
 	# Donde scope es de la clase Scope.
+	attr_accessor :scope
 	def initialize(scope)
 		@scope = scope
 	end	
@@ -29,15 +30,50 @@ end
 
 class Scope
 	# Donde inst es de la clase Instr
-	def initialize(inst)
+	attr_accessor :inst
+	attr_accessor :decl
+	def initialize(inst, decl = nil)
 		@inst = inst
+		@decl = decl
 	end
 	def printAST(lvl)
 		@inst.printAST(lvl)
 	end
 end
 
+class Decl
+	# Donde type es de la clase Type, listI es de la clase ListI y 
+	# decl es de la clase Decl
+	attr_accessor :type
+	attr_accessor :listI
+	attr_accessor :decl
+	def initialize(type, listI, decl = nil)
+		@type = type
+		@listI = listI
+		@decl = decl 
+	end	
+end
+
+#class Type
+#	attr_accessor :type
+#	def initialize(type)
+#		@type = type
+#	end	
+#end
+
+class ListI
+	# Donde id es de la clase Terms (:IDENTIFIER) y listI es de la clase ListI
+	attr_accessor :id
+	attr_accessor :listI
+	def initialize(id, listI = nil)
+		@id = id
+		@listI = listI
+	end	
+end
+
 class Instr
+	attr_accessor :opID
+	attr_accessor :branches
 	# Donde nameinst1 puede ser :INSTR, :READ, :WRITE, :ASSIGN, :COND, :IND_LOOP, 
 	# => :DET_LOOP o :S y nameinst2 tiene que ser :INSTR.
 	def initialize(nameinst1, inst1, nameinst2 = nil, inst2 = nil)
@@ -62,9 +98,11 @@ class Instr
 end
 
 class Assign
+	attr_accessor :types
+	attr_accessor :branches
 	def initialize(type1, var, type2, expr)
 		@types = [type1, type2]	# Donde type1 es :VARIABLE y type2 es :EXPRESSION
-		@branches = [var, expr] # Donde var es clase Var y expr es clase Expr
+		@branches = [var, expr] # Donde var es clase Term y expr es clase Expr
 	end
 	def printAST(lvl)
 		# Escribirá el nombre de cada operación y llamará a los prints de las clases
@@ -218,6 +256,8 @@ class ParExp
 end
 
 class Terms
+	attr_accessor :nameTerm
+	attr_accessor :term
 	def initialize(nameTerm, term)
 		@nameTerm = nameTerm
 		@term = term

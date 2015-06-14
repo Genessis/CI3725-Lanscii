@@ -402,12 +402,13 @@ class Lexer
 				end	
 			end
 		end
-		# Si hubo algun caracter invalido, se imprime y se borra el arreglo de tokens validos.
+		# Si hubo un comentario sin cerrarse, la funcion devuelve false
 		if errComm == true 
 			puts "ERROR: Comment section opened but not closed at line: " \
 						"#{commline}, column: #{commcol} \n"
 			return false
 		else 
+		# Si hubo algun caracter invalido, se devuelve .
 			if (@errList.length > 0)
 				@tokensList.drop(@tokensList.length)
 				for err in @errList
@@ -415,15 +416,18 @@ class Lexer
 								"#{err.position[0]}, column: #{err.position[1]} \n"
 				end
 				return false
-			# Si todos los caracteres son validos, se imprimen los tokens.
+			# Si todos los caracteres son validos, se retorna true.
 			else
-				for tok in @tokensList
-					puts "token #{tok.id} value (#{tok.symbol}) at line: #{tok.position[0]}," \
-									" column: #{tok.position[1]} \n"
-				end
 				return true
 			end
 		end	
+	end
+
+	def print_Tokens
+		for tok in @tokensList
+			puts "token #{tok.id} value (#{tok.symbol}) at line: #{tok.position[0]}," \
+							" column: #{tok.position[1]} \n"
+		end
 	end
 
 	def next_token

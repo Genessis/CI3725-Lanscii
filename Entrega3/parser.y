@@ -12,6 +12,7 @@
 # *
 # *  Último midificación: 31 Mayo de 2015
 
+#$symTab = SymbolTable.new
 
 class Parser
 
@@ -56,32 +57,31 @@ class Parser
 
 		# Simbolo inicial: define un programa en LANSCII e incorpora el alcance.
 		S
-		: Scope			{result = S.new(val[0]); result.printAST(0)}
+		: Scope			{result = S.new(val[0]); return result}
 		;
 
 		# Alcance: le quita la recursividad al simbolo inicial.
 		Scope 
-		: LCURLY Decl PIPE Inst RCURLY			{result = Scope.new(val[3])}
+		: LCURLY Decl PIPE Inst RCURLY			{result = Scope.new(val[3], val[1])}
 		| LCURLY Inst RCURLY					{result = Scope.new(val[1])}
 		;
-
 		# Declaraciones: define las declaraciones en un entorno (alcance).
 		Decl
-		: Type ListI		
-		| Decl Type ListI	
+		: Type ListI			{result = Decl.new(val[0], val[1])}
+		| Decl Type ListI		{result = Decl.new(val[1], val[2], val[0])}
 		;
 
 		# Tipos: define los diferentes tipos de variables presentes en LANSCII.
 		Type
-		: AT
-		| EXCLAMATION_MARK
-		| PERCENT
+		: AT 					{result = :AT}
+		| EXCLAMATION_MARK		{result = :EXCLAMATION_MARK}
+		| PERCENT				{result = :PERCENT}
 		;
 
 		# Lista de identificadores de variables: define el nombre de variables.
 		ListI
-		: Var
-		| ListI Var
+		: Var 				{result = ListI.new(val[0])}
+		| ListI Var 		{result = ListI.new(val[1], val[0])}
 		;
 
 		# Instrucciones: define las instrucciones validas asociadas a un programa
@@ -94,7 +94,7 @@ class Parser
 		| Cond 									{result = Instr.new(:CONDITIONAL_STATEMENT , val[0])}
 		| ILoop 								{result = Instr.new(:IND_LOOP , val[0])}
 		| DLoop 								{result = Instr.new(:DET_LOOP , val[0])}
-		| Scope									{result = Instr.new(:Scope , val[0])}
+		| Scope									{result = Instr.new(:SCOPE , val[0])}
 		;
 
 		Assign
@@ -133,7 +133,7 @@ class Parser
 		| Expr PERCENT Expr 								{result = BinExp.new("%", val[0], val[2])}
 		| MINUS Expr 	=UMINUS   							{result = UnaExp.new("-" , val[1])}
 		| LPARENTHESIS Expr RPARENTHESIS =PRNTS 			{result = ParExp.new(:EXPRESSION , val[1])}
-		| Expr OR Expr   									{result = BinExp.new("\/" , val[1])}
+		| Expr OR Expr   									{result = BinExp.new("\\/" , val[0], val[2])}
 		| Expr AND Expr 									{result = BinExp.new("/\\", val[0], val[2])}
 		| Expr NEGATION 									{result = UnaExp.new("^", val[0])}
 		| Expr LESS_THAN Expr 								{result = BinExp.new("<", val[0], val[2])}
@@ -182,6 +182,7 @@ end
 
 require './lexer.rb'
 require './ruleClasses.rb'
+require './symbolTable.rb'
 
 def initialize(lexer)
 	@lexer = lexer
