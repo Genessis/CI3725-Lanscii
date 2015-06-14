@@ -41,7 +41,7 @@ class SymbolTable
 			if (@father != nil)
 				return @father.update(key, value)
 			else
-				puts "ERROR: la variable '#{key}' no ha sido declarada."
+				puts "ERROR: variable '#{key}' has not been declared."
 				return false
 			end
 		else
@@ -55,7 +55,7 @@ class SymbolTable
 			if (@father != nil)
 				return @father.lookup(key)
 			else
-				puts "ERROR: la variable '#{key}' no ha sido declarada."
+				puts "ERROR: variable '#{key}' has not been declared."
 				return nil
 			end
 		else

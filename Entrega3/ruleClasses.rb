@@ -209,6 +209,8 @@ end
 ###################################
 
 class BinExp
+	attr_accessor :elems
+	attr_accessor :op
 	# Donde type0 es :OPERATION, op puede ser +, -, *, /, %, ~, \/, /\, <, <=,
 	# >, >=, =, ' o &, type1 y type2 son :EXPRESSION y expr1 y expr2 son expresiones
 	def initialize(op, expr1, expr2)
@@ -242,6 +244,8 @@ end
 
 # Donde type es :EXPRESSION y expr es una expresion cualquiera
 class ParExp
+	attr_accessor :type
+	attr_accessor :expr
 	def initialize(type, expr)
 		@type = type
 		@expr = expr		

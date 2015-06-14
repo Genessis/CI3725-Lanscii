@@ -1,6 +1,5 @@
-{%gol colombia @jeje |
- gol = </> \/ <|>;
- colombia = gol
+{%gol @colombia !jeje |
+ gol = (2 + 4)
 {-!bool |
    bool = true-}
 }
