@@ -19,6 +19,10 @@ require './symbolTable.rb'
 
 $symTable = SymbolTable.new(0)
 
+################################################
+# Manejo de la estructura general del programa #
+################################################
+
 def program_Handler(ast)
 	scope_Handler(ast.scope)
 end
@@ -65,8 +69,14 @@ def instr_Handler(instr)
 		end
 	when :ASSIGN
 		assign_Handler(instr.branches[0])
+	when :READ
+		#read_Handler(instr.)
 	end
 end
+
+############################################
+# Manejo de las instrucciones del programa #
+############################################
 
 def assign_Handler(assign)
 	idVar = assign.branches[0].term
@@ -76,6 +86,10 @@ def assign_Handler(assign)
 		puts "ERROR: type dismatch."
 	end
 end
+
+##########################################
+# Manejo de las expresiones del programa #
+##########################################
 
 # Esta función recibe una expresión y devuelve su tipo.
 def expression_Handler(expr)
