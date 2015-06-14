@@ -141,7 +141,7 @@ class Parser
 		| Expr LESS_OR_EQUAL Expr 							{result = BinExp.new("<=", val[0], val[2])}
 		| Expr GREATER_OR_EQUAL Expr 						{result = BinExp.new(">=", val[0], val[2])}
 		| Expr EQUALS Expr 									{result = BinExp.new("=", val[0], val[2])}
-		| Expr NOT_EQUAL Expr 								{result = BinExp.new("!=", val[0], val[2])}
+		| Expr NOT_EQUAL Expr 								{result = BinExp.new("/=", val[0], val[2])}
 		| Expr TILDE Expr 									{result = BinExp.new("~", val[0], val[2])}
 		| Expr ET Expr 										{result = BinExp.new("&", val[0], val[2])}
 		| ROTATION Expr 									{result = UnaExp.new("$", val[1])}

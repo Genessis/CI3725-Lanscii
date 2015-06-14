@@ -724,7 +724,7 @@ module_eval(<<'.,.,', 'parser.y', 142)
 
 module_eval(<<'.,.,', 'parser.y', 143)
   def _reduce_42(val, _values, result)
-    result = BinExp.new("!=", val[0], val[2])
+    result = BinExp.new("/=", val[0], val[2])
     result
   end
 .,.,

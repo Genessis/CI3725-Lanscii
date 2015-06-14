@@ -74,11 +74,10 @@ def assign_Handler(assign)
 	typeExpr = expression_Handler(assign.branches[1])
 	if (typeVar != typeExpr)
 		puts "ERROR: type dismatch."
-	else
-		puts "Son iguales"
 	end
 end
 
+# Esta función recibe una expresión y devuelve su tipo.
 def expression_Handler(expr)
 	# Procesar como binaria
 	if expr.instance_of?(BinExp)
@@ -111,6 +110,8 @@ def expression_Handler(expr)
 	end
 end
 
+# Devuelve el tipo de las expresiones binarias
+# => si hay un error de tipo, devuelve nil.
 def binExp_Handler(expr)
 	typeExpr1 = expression_Handler(expr.elems[0])
 	typeExpr2 = expression_Handler(expr.elems[1])
@@ -130,6 +131,8 @@ def binExp_Handler(expr)
 		else
 			return nil
 		end
+	when /^(=|\/=)/
+		return :BOOLEAN
 	when /^[\+\-\*\/%]/
 		if typeExpr1 == :NUMBER
 			return :NUMBER
@@ -155,6 +158,8 @@ def parExp_Handler(expr)
 	return expression_Handler(expr.expr)
 end
 
+# Devuelve el tipo de las expresiones unarias
+# => si hay un error de tipo, devuelve nil.
 def unaExp_Handler(expr)
 	typeExpr = expression_Handler(expr.elem)
 	case expr.op
