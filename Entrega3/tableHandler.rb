@@ -159,6 +159,25 @@ def parExp_Handler(expr)
 end
 
 def unaExp_Handler(expr)
-#	puts "Es unaria"
-	return expression_Handler(expr.expr)
+	typeExpr = expression_Handler(expr.expr)
+	case expr.op
+	when /^[$']/
+		if typeExpr == :CANVAS
+			return :CANVAS
+		else
+			return nil
+		end
+	when /\^/
+		if typeExpr == :BOOLEAN
+			return :BOOLEAN
+		else
+			return nil
+		end
+	when /-/
+		if typeExpr == :NUMBER
+			return :BUMBER
+		else
+			return nil
+		end
+	end
 end
