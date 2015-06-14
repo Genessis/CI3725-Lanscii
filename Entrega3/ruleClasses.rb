@@ -146,6 +146,8 @@ end
 #end
 
 class Cond
+	attr_accessor :types
+	attr_accessor :elems
 	# Donde type1 es :CONDITION, type2 es :THEN y type3 puede ser :ELSE
 	# Donde expr es de la clase Expr, inst1 e inst2 son de la clase Instr.
 	def initialize(type1, expr, type2, inst1, type3=nil, inst2=nil)

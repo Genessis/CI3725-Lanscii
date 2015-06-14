@@ -1,10 +1,11 @@
 {%gol @colombia !jeje |
 {- gol = -2;
  colombia = </>';
- colombia = $colombia ~ (# ~ $<|>);-}
+ colombia = $colombia ~ (# ~ $<|>);
  jeje = (-4 = 5) /\ (true = true) \/ (colombia /= <|>);
  read jeje;
- write jeje
+ write jeje-}
+ (colombia = colombia ? gol = 2 : gol = 4 )
 {-!bool |
    bool = true-}
 }

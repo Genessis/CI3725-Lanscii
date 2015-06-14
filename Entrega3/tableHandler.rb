@@ -73,6 +73,8 @@ def instr_Handler(instr)
 		read_Handler(instr)
 	when :WRITE
 		write_Handler(instr)
+	when :CONDITIONAL_STATEMENT
+		conditional_statment_Handler(instr.branches[0])
 	end
 end
 
@@ -119,6 +121,20 @@ def write_Handler(write)
 	return 0
 end
 
+def conditional_statment_Handler(cs)
+	expr = cs.elems[0]
+	if (expression_Handler(expr) != :BOOLEAN)
+		puts "CONDITIONAL STATEMENT ERRROR: expression must be boolean."
+		return 1
+	end
+	instr1 = cs.elems[1]
+	instr_Handler(instr1)
+	if (cs.elems[2] != nil)
+		instr2 = cs.elems[2]
+		instr_Handler(instr2)
+	end
+	return 0
+end
 
 ##########################################
 # Manejo de las expresiones del programa #
