@@ -3,7 +3,8 @@
  colombia = </>';
  colombia = $colombia ~ (# ~ $<|>);-}
  jeje = (-4 = 5) /\ (true = true) \/ (colombia /= <|>);
- read jeje
+ read jeje;
+ write jeje
 {-!bool |
    bool = true-}
 }

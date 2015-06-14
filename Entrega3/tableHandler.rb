@@ -113,7 +113,7 @@ def write_Handler(write)
 	expr = write.branches[0]
 	typeExpr = expression_Handler(expr)
 	if (typeExpr != :CANVAS)
-		puts "WRITE ERROR: variable '#{idVar}' must be an int or a boolean."
+		puts "WRITE ERROR: the expression given must be a canvas."
 		return 1
 	end
 	return 0
