@@ -20,22 +20,17 @@ class Parser
 	prechigh
 
 		nonassoc PRNTS
-
 		nonassoc NEGATION
 		nonassoc UMINUS
 		left MULTIPLY DIVISION PERCENT
 		left PLUS MINUS
-
 		nonassoc TRANSPOSITION
 		nonassoc ROTATION
 		left ET TILDE
-
 		nonassoc LESS_THAN GREATER_THAN LESS_OR_EQUAL GREATER_OR_EQUAL
 		right NOT_EQUAL EQUALS
-
 		left AND
 		left OR
-
 		right ASSIGN
 		left SEMICOLON
 

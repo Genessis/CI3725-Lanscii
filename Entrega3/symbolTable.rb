@@ -17,7 +17,7 @@ class SymbolTable
 
 	attr_accessor :father
 
-	def initialize(id, father = nil)
+	def initialize(father = nil)
 		@symTable = Hash.new
 		@father = father
 	end
@@ -60,8 +60,24 @@ class SymbolTable
 		end
 	end
 
+	def get_lvl
+		auxTab = self
+		lvl = 0
+		while (auxTab.father != nil)
+			auxTab = auxTab.father
+			lvl += 1
+		end
+		return lvl
+	end
+
 	def print_Table
+		lvl = get_lvl
+		for i in 1..lvl
+			print "\t"
+		end
+		@symTable.each do |k|
+			print "#{k[1][0]} #{k[0]} "
+		end
 		puts
-		puts @symTable
 	end
 end

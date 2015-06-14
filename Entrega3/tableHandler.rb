@@ -17,39 +17,61 @@
 require './ruleClasses.rb'
 require './symbolTable.rb'
 
-$symTable = SymbolTable.new(0)
+$symTable = nil		# Tabla de simbolos.
+$tableStack = []	# Pila de tablas.
 
 ################################################
 # Manejo de la estructura general del programa #
 ################################################
 
+# Manejador del programa principal.
 def program_Handler(ast)
 	scope_Handler(ast.scope)
 end
 
+# Manejador de alcances.
 def scope_Handler(scope)
-	symTableAux = SymbolTable.new(1, $symTable)
+	# Asignación de una nueva tabla.
+	symTableAux = SymbolTable.new($symTable)
 	$symTable = symTableAux
+	#Manejo de la estructura.
 	decl_Handler(scope.decl)
 	instr_Handler(scope.inst)
-	$symTable.print_Table
+	# Se empila la tabla en la pila.
+	$tableStack << $symTable
 	$symTable = $symTable.father
+	# Si ya se analizo todo el programa, se imprimen cada
+	# de las tablas.
+	if ($symTable == nil)
+#		if (errDecl or errInstr)
+#			abort
+#		end
+		$tableStack.reverse!
+		$tableStack.each do |st|
+			st.print_Table
+		end
+	end
 end
 
+# Manejador de declaraciones.
 def decl_Handler(decl)
 	case decl.type
 	when :AT
 		listI_Handler(:CANVAS, decl.listI)
+#		return listI_Handler(:CANVAS, decl.listI)
 	when :PERCENT
 		listI_Handler(:NUMBER, decl.listI)
+#		return listI_Handler(:NUMBER, decl.listI)
 	when :EXCLAMATION_MARK
 		listI_Handler(:BOOLEAN, decl.listI)
+#		return listI_Handler(:BOOLEAN, decl.listI)
 	end
 	if (decl.decl != nil)
 		decl_Handler(decl.decl)
 	end
 end
 
+# Manejador de lista de identificadores
 def listI_Handler(type, listI)
 	if !($symTable.contains(listI.id.term))
 		$symTable.insert(listI.id.term, [type, nil])
@@ -62,6 +84,7 @@ def listI_Handler(type, listI)
 	end
 end
 
+# Manejador de instrucciones
 def instr_Handler(instr, iterVar=nil)
 	case instr.opID[0]
 	when :INSTR
@@ -93,6 +116,7 @@ end
 # Manejo de las instrucciones del programa #
 ############################################
 
+# Manejador de la instruccion ASSIGN.
 def assign_Handler(assign, iterVar=nil)
 	idVar = assign.branches[0].term
 	if (idVar == iterVar)
@@ -106,12 +130,14 @@ def assign_Handler(assign, iterVar=nil)
 	typeVar = $symTable.lookup(idVar)[0]
 	typeExpr = expression_Handler(assign.branches[1])
 	if (typeVar != typeExpr)
-		puts "ASSIGN ERROR: type dismatch."
+		puts "ASSIGN ERROR: #{typeExpr} expression assigned to #{typeVar} "\
+			"variable '#{idVar}'."
 		return 1
 	end
 	return 0
 end
 
+# Manejador de la instruccion READ.
 def read_Handler(read)
 	idVar = read.branches[0].term
 	if ($symTable.lookup(idVar) == nil)
@@ -126,6 +152,7 @@ def read_Handler(read)
 	return 0
 end
 
+# Manejador de la instruccion WRITE.
 def write_Handler(write)
 	expr = write.branches[0]
 	typeExpr = expression_Handler(expr)
@@ -136,21 +163,23 @@ def write_Handler(write)
 	return 0
 end
 
+# Manejador de la instruccion CONDITIONAL STATEMENT.
 def conditional_statment_Handler(cs)
 	expr = cs.elems[0]
-	if (expression_Handler(expr) != :BOOLEAN)
-		puts "CONDITIONAL STATEMENT ERROR: expression must be boolean."
-		return 1
-	end
 	instr1 = cs.elems[1]
 	instr_Handler(instr1)
 	if (cs.elems[2] != nil)
 		instr2 = cs.elems[2]
 		instr_Handler(instr2)
 	end
+	if (expression_Handler(expr) != :BOOLEAN)
+		puts "CONDITIONAL STATEMENT ERROR: expression must be boolean."
+		return 1
+	end
 	return 0
 end
 
+# Manejador de la instruccion IND LOOP.
 def iLoop_Handler(iLoop)
 	expr = iLoop.elems[0]
 	if (expression_Handler(expr) != :BOOLEAN)
@@ -162,6 +191,7 @@ def iLoop_Handler(iLoop)
 	return 0
 end
 
+# Manejador de la instruccion DET LOOP.
 def dLoop_Handler(dLoop)
 	if (dLoop.types[0] == :VARIABLE)
 		iterVar = dLoop.elems[0].term
@@ -200,6 +230,7 @@ end
 # Manejo de las expresiones del programa #
 ##########################################
 
+# Manejador de expresiones:
 # Esta función recibe una expresión y devuelve su tipo.
 def expression_Handler(expr)
 	# Procesar como binaria
@@ -233,6 +264,7 @@ def expression_Handler(expr)
 	end
 end
 
+# Manejador de expresiones binarias:
 # Devuelve el tipo de las expresiones binarias
 # => si hay un error de tipo, devuelve nil.
 def binExp_Handler(expr)
@@ -277,10 +309,12 @@ def binExp_Handler(expr)
 	end
 end
 
+# Manejador de expresiones parentizadas.
 def parExp_Handler(expr)
 	return expression_Handler(expr.expr)
 end
 
+# Manejador de expresiones unarias.
 # Devuelve el tipo de las expresiones unarias
 # => si hay un error de tipo, devuelve nil.
 def unaExp_Handler(expr)

@@ -423,13 +423,15 @@ class Lexer
 		end	
 	end
 
+	# Metodo que imprime la lista de tokens con el fomato especificado.
 	def print_Tokens
-		for tok in @tokensList
+		for tok in @tokensAux
 			puts "token #{tok.id} value (#{tok.symbol}) at line: #{tok.position[0]}," \
 							" column: #{tok.position[1]} \n"
 		end
 	end
 
+	# Funcion usada por el parser para obtener los tokens.
 	def next_token
 		if ((tok = @tokensList.shift) != nil)
 			@tokensAux << tok

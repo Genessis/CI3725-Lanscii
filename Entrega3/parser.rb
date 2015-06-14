@@ -7,7 +7,7 @@
 require 'racc/parser.rb'
 class Parser < Racc::Parser
 
-module_eval(<<'...end parser.y/module_eval...', 'parser.y', 182)
+module_eval(<<'...end parser.y/module_eval...', 'parser.y', 177)
 
 require './lexer.rb'
 require './ruleClasses.rb'
@@ -445,168 +445,168 @@ Racc_debug_parser = false
 
 # reduce 0 omitted
 
-module_eval(<<'.,.,', 'parser.y', 59)
+module_eval(<<'.,.,', 'parser.y', 54)
   def _reduce_1(val, _values, result)
     result = S.new(val[0]); return result
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 64)
+module_eval(<<'.,.,', 'parser.y', 59)
   def _reduce_2(val, _values, result)
     result = Scope.new(val[3], val[1])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 65)
+module_eval(<<'.,.,', 'parser.y', 60)
   def _reduce_3(val, _values, result)
     result = Scope.new(val[1])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 69)
+module_eval(<<'.,.,', 'parser.y', 64)
   def _reduce_4(val, _values, result)
     result = Decl.new(val[0], val[1])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 70)
+module_eval(<<'.,.,', 'parser.y', 65)
   def _reduce_5(val, _values, result)
     result = Decl.new(val[1], val[2], val[0])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 75)
+module_eval(<<'.,.,', 'parser.y', 70)
   def _reduce_6(val, _values, result)
     result = :AT
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 76)
+module_eval(<<'.,.,', 'parser.y', 71)
   def _reduce_7(val, _values, result)
     result = :EXCLAMATION_MARK
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 77)
+module_eval(<<'.,.,', 'parser.y', 72)
   def _reduce_8(val, _values, result)
     result = :PERCENT
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 82)
+module_eval(<<'.,.,', 'parser.y', 77)
   def _reduce_9(val, _values, result)
     result = ListI.new(val[0])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 83)
+module_eval(<<'.,.,', 'parser.y', 78)
   def _reduce_10(val, _values, result)
     result = ListI.new(val[1], val[0])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 89)
+module_eval(<<'.,.,', 'parser.y', 84)
   def _reduce_11(val, _values, result)
     result = Instr.new(:INSTR , val[0], :INSTR , val[2])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 90)
+module_eval(<<'.,.,', 'parser.y', 85)
   def _reduce_12(val, _values, result)
     result = Instr.new(:ASSIGN , val[0])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 91)
+module_eval(<<'.,.,', 'parser.y', 86)
   def _reduce_13(val, _values, result)
     result = Instr.new(:READ , val[1])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 92)
+module_eval(<<'.,.,', 'parser.y', 87)
   def _reduce_14(val, _values, result)
     result = Instr.new(:WRITE , val[1])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 93)
+module_eval(<<'.,.,', 'parser.y', 88)
   def _reduce_15(val, _values, result)
     result = Instr.new(:CONDITIONAL_STATEMENT , val[0])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 94)
+module_eval(<<'.,.,', 'parser.y', 89)
   def _reduce_16(val, _values, result)
     result = Instr.new(:IND_LOOP , val[0])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 95)
+module_eval(<<'.,.,', 'parser.y', 90)
   def _reduce_17(val, _values, result)
     result = Instr.new(:DET_LOOP , val[0])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 96)
+module_eval(<<'.,.,', 'parser.y', 91)
   def _reduce_18(val, _values, result)
     result = Instr.new(:SCOPE , val[0])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 100)
+module_eval(<<'.,.,', 'parser.y', 95)
   def _reduce_19(val, _values, result)
     result = Assign.new(:VARIABLE , val[0], :EXPRESSION, val[2])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 104)
+module_eval(<<'.,.,', 'parser.y', 99)
   def _reduce_20(val, _values, result)
     result = Cond.new(:CONDITION , val[1], :THEN , val[3])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 105)
+module_eval(<<'.,.,', 'parser.y', 100)
   def _reduce_21(val, _values, result)
     result = Cond.new(:CONDITION , val[1], :THEN , val[3], :ELSE , val[5])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 109)
+module_eval(<<'.,.,', 'parser.y', 104)
   def _reduce_22(val, _values, result)
     result = ILoop.new(:WHILE , val[1], :DO , val[3])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 113)
+module_eval(<<'.,.,', 'parser.y', 108)
   def _reduce_23(val, _values, result)
     result = DLoop.new(:EXPRESSION, val[1], :EXPRESSION , val[3],:INSTR, val[5], nil, nil)
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 114)
+module_eval(<<'.,.,', 'parser.y', 109)
   def _reduce_24(val, _values, result)
     result = DLoop.new(:VARIABLE, val[1], :EXPRESSION , val[3],:EXPRESSION, val[5], :INSTR , val[7])
     result
@@ -617,140 +617,140 @@ module_eval(<<'.,.,', 'parser.y', 114)
 
 # reduce 26 omitted
 
-module_eval(<<'.,.,', 'parser.y', 128)
+module_eval(<<'.,.,', 'parser.y', 123)
   def _reduce_27(val, _values, result)
     result = BinExp.new("+", val[0], val[2])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 129)
+module_eval(<<'.,.,', 'parser.y', 124)
   def _reduce_28(val, _values, result)
     result = BinExp.new("-", val[0], val[2])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 130)
+module_eval(<<'.,.,', 'parser.y', 125)
   def _reduce_29(val, _values, result)
     result = BinExp.new("*", val[0], val[2])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 131)
+module_eval(<<'.,.,', 'parser.y', 126)
   def _reduce_30(val, _values, result)
     result = BinExp.new("/", val[0], val[2])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 132)
+module_eval(<<'.,.,', 'parser.y', 127)
   def _reduce_31(val, _values, result)
     result = BinExp.new("%", val[0], val[2])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 133)
+module_eval(<<'.,.,', 'parser.y', 128)
   def _reduce_32(val, _values, result)
     result = UnaExp.new("-" , val[1])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 134)
+module_eval(<<'.,.,', 'parser.y', 129)
   def _reduce_33(val, _values, result)
     result = ParExp.new(:EXPRESSION , val[1])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 135)
+module_eval(<<'.,.,', 'parser.y', 130)
   def _reduce_34(val, _values, result)
     result = BinExp.new("\\/" , val[0], val[2])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 136)
+module_eval(<<'.,.,', 'parser.y', 131)
   def _reduce_35(val, _values, result)
     result = BinExp.new("/\\", val[0], val[2])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 137)
+module_eval(<<'.,.,', 'parser.y', 132)
   def _reduce_36(val, _values, result)
     result = UnaExp.new("^", val[0])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 138)
+module_eval(<<'.,.,', 'parser.y', 133)
   def _reduce_37(val, _values, result)
     result = BinExp.new("<", val[0], val[2])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 139)
+module_eval(<<'.,.,', 'parser.y', 134)
   def _reduce_38(val, _values, result)
     result = BinExp.new(">", val[0], val[2])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 140)
+module_eval(<<'.,.,', 'parser.y', 135)
   def _reduce_39(val, _values, result)
     result = BinExp.new("<=", val[0], val[2])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 141)
+module_eval(<<'.,.,', 'parser.y', 136)
   def _reduce_40(val, _values, result)
     result = BinExp.new(">=", val[0], val[2])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 142)
+module_eval(<<'.,.,', 'parser.y', 137)
   def _reduce_41(val, _values, result)
     result = BinExp.new("=", val[0], val[2])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 143)
+module_eval(<<'.,.,', 'parser.y', 138)
   def _reduce_42(val, _values, result)
     result = BinExp.new("/=", val[0], val[2])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 144)
+module_eval(<<'.,.,', 'parser.y', 139)
   def _reduce_43(val, _values, result)
     result = BinExp.new("~", val[0], val[2])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 145)
+module_eval(<<'.,.,', 'parser.y', 140)
   def _reduce_44(val, _values, result)
     result = BinExp.new("&", val[0], val[2])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 146)
+module_eval(<<'.,.,', 'parser.y', 141)
   def _reduce_45(val, _values, result)
     result = UnaExp.new("$", val[1])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 147)
+module_eval(<<'.,.,', 'parser.y', 142)
   def _reduce_46(val, _values, result)
     result = UnaExp.new("'", val[0])
     result
@@ -765,35 +765,35 @@ module_eval(<<'.,.,', 'parser.y', 147)
 
 # reduce 50 omitted
 
-module_eval(<<'.,.,', 'parser.y', 160)
+module_eval(<<'.,.,', 'parser.y', 155)
   def _reduce_51(val, _values, result)
     result = Terms.new(:IDENTIFIER , val[0])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 165)
+module_eval(<<'.,.,', 'parser.y', 160)
   def _reduce_52(val, _values, result)
     result = Terms.new(:CANVAS , val[0])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 170)
+module_eval(<<'.,.,', 'parser.y', 165)
   def _reduce_53(val, _values, result)
     result = Terms.new(:NUMBER , val[0])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 175)
+module_eval(<<'.,.,', 'parser.y', 170)
   def _reduce_54(val, _values, result)
     result = Terms.new(:TRUE , val[0])
     result
   end
 .,.,
 
-module_eval(<<'.,.,', 'parser.y', 176)
+module_eval(<<'.,.,', 'parser.y', 171)
   def _reduce_55(val, _values, result)
     result = Terms.new(:FALSE , val[0])
     result
