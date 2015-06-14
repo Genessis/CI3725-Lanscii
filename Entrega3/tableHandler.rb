@@ -71,6 +71,8 @@ def instr_Handler(instr)
 		assign_Handler(instr.branches[0])
 	when :READ
 		read_Handler(instr)
+	when :WRITE
+		write_Handler(instr)
 	end
 end
 
@@ -106,6 +108,17 @@ def read_Handler(read)
 	end
 	return 0
 end
+
+def write_Handler(write)
+	expr = write.branches[0]
+	typeExpr = expression_Handler(expr)
+	if (typeExpr != :CANVAS)
+		puts "WRITE ERROR: variable '#{idVar}' must be an int or a boolean."
+		return 1
+	end
+	return 0
+end
+
 
 ##########################################
 # Manejo de las expresiones del programa #
