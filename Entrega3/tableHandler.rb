@@ -61,14 +61,18 @@ def listI_Handler(type, listI)
 	end
 end
 
-def instr_Handler(instr)
+def instr_Handler(instr, iterVar=nil)
 	case instr.opID[0]
 	when :INSTR
 		instr.branches.each do |i|
-			instr_Handler(i)
+			instr_Handler(i,iterVar)
 		end
 	when :ASSIGN
-		assign_Handler(instr.branches[0])
+		if iterVar != nil
+			assign_Handler(instr.branches[0], iterVar)
+		else
+			assign_Handler(instr.branches[0])
+		end
 	when :READ
 		read_Handler(instr)
 	when :WRITE
@@ -86,8 +90,12 @@ end
 # Manejo de las instrucciones del programa #
 ############################################
 
-def assign_Handler(assign)
+def assign_Handler(assign, iterVar=nil)
 	idVar = assign.branches[0].term
+	if (idVar == iterVar)
+		puts "ASSIGN ERROR: iterator '#{idVar}' cannot be modified."
+		return 1
+	end
 	if ($symTable.lookup(idVar) == nil)
 		puts "ASSIGN ERROR: variable '#{idVar}' has not been declared."
 		return 1
@@ -153,7 +161,23 @@ end
 
 def dLoop_Handler(dLoop)
 	if (dLoop.types[0] == :VARIABLE)
-		puts "jeje"
+		iterVar = dLoop.elems[0].term
+		if ($symTable.lookup(iterVar) == nil)
+			$symTable.insert(iterVar, [:NUMBER, nil])
+		else
+			$symTable.update(iterVar, [:NUMBER, nil])
+		end
+		expr1 = dLoop.elems[1]
+		typeExpr1 = expression_Handler(expr1)
+		expr2 = dLoop.elems[2]
+		typeExpr2 = expression_Handler(expr2)
+		if (typeExpr1 != :NUMBER) or (typeExpr2 != :NUMBER)
+			puts "DET LOOP ERROR: expressions must be arithmetic."
+			return 1
+		end
+		instr = dLoop.elems[3]
+		instr_Handler(instr, iterVar)
+		return 0
 	else
 		expr1 = dLoop.elems[0]
 		typeExpr1 = expression_Handler(expr1)
