@@ -55,7 +55,6 @@ class SymbolTable
 			if (@father != nil)
 				return @father.lookup(key)
 			else
-				puts "ERROR: variable '#{key}' has not been declared."
 				return nil
 			end
 		else

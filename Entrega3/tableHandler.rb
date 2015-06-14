@@ -70,7 +70,7 @@ def instr_Handler(instr)
 	when :ASSIGN
 		assign_Handler(instr.branches[0])
 	when :READ
-		#read_Handler(instr.)
+		read_Handler(instr)
 	end
 end
 
@@ -80,11 +80,31 @@ end
 
 def assign_Handler(assign)
 	idVar = assign.branches[0].term
+	if ($symTable.lookup(idVar) == nil)
+		puts "ASSIGN ERROR: variable '#{idVar}' has not been declared."
+		return 1
+	end
 	typeVar = $symTable.lookup(idVar)[0]
 	typeExpr = expression_Handler(assign.branches[1])
 	if (typeVar != typeExpr)
-		puts "ERROR: type dismatch."
+		puts "ASSIGN ERROR: type dismatch."
+		return 1
 	end
+	return 0
+end
+
+def read_Handler(read)
+	idVar = read.branches[0].term
+	if ($symTable.lookup(idVar) == nil)
+		puts "READ ERROR: variable '#{idVar}' has not been declared."
+		return 1
+	end
+	typeVar = $symTable.lookup(idVar)[0]
+	if (typeVar != :NUMBER) and (typeVar != :BOOLEAN)
+		puts "READ ERROR: variable '#{idVar}' must be an int or a boolean."
+		return 1
+	end
+	return 0
 end
 
 ##########################################
