@@ -12,7 +12,10 @@
 	  	 bool = true;
 	  	 x = 4;
 	  	 {
-	  	  x = 6
+	  	  x = 6;
+	  	  { !bool2 |
+	  	  	bool2 = false /\ true \/ jeje
+	  	  }
 	  	 }
 	 }
 }

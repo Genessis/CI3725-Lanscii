@@ -11,7 +11,7 @@
  *			Genessis Sanchez	11-10935
  *          Daniela Socas		11-10979
  *
- *  Última modificación: 13 de Junio de 2015
+ *  Última modificación: 14 de Junio de 2015
 =end
 
 require './ruleClasses.rb'

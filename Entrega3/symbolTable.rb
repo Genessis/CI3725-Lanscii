@@ -10,7 +10,7 @@
  *			Genessis Sanchez	11-10935
  *          Daniela Socas		11-10979
  *
- *  Último midificación: 13 de junio de 2015
+ *  Último midificación: 14 de junio de 2015
 =end
 
 class SymbolTable
@@ -75,8 +75,12 @@ class SymbolTable
 		for i in 1..lvl
 			print "\t"
 		end
-		@symTable.each do |k|
-			print "#{k[1][0]} #{k[0]} "
+		if (@symTable.empty?)
+			print "- No variables declared at this scope -"
+		else
+			@symTable.each do |k|
+				print "#{k[1][0]} #{k[0]} "
+			end
 		end
 		puts
 	end
