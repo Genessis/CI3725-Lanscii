@@ -35,24 +35,28 @@ def scope_Handler(scope)
 	symTableAux = SymbolTable.new($symTable)
 	$symTable = symTableAux
 	#Manejo de la estructura.
-	declError = decl_Handler(scope.decl)
-	puts "declError = #{declError}"
-	instr_Handler(scope.inst)
-	puts "instrError = #{instrError}"
-	# Se empila la tabla en la pila.
+	declError = 0
+	if (scope.decl != nil)
+		declError = decl_Handler(scope.decl)
+	end
+	instrError = instr_Handler(scope.inst)
+	# Se empila la tabla del scope en la pila de tablas.
 	$tableStack << $symTable
 	$symTable = $symTable.father
 	# Si ya se analizo todo el programa, se imprimen cada
-	# de las tablas.
+	# de las tablas (si no hubo errores).
 	if ($symTable == nil)
-		if (declError > 0)
+		if (declError > 0) or (instrError > 0)
+			puts "Symbol table will not be shown."
 			abort
 		end
+		puts "Symbol Table:"
 		$tableStack.reverse!
 		$tableStack.each do |st|
 			st.print_Table
 		end
 	end
+	return declError + instrError
 end
 
 # Manejador de declaraciones.
@@ -61,13 +65,10 @@ def decl_Handler(decl)
 	case decl.type
 	when :AT
 		result1 = listI_Handler(:CANVAS, decl.listI)
-#		return listI_Handler(:CANVAS, decl.listI)
 	when :PERCENT
 		result1 = listI_Handler(:NUMBER, decl.listI)
-#		return listI_Handler(:NUMBER, decl.listI)
 	when :EXCLAMATION_MARK
 		result1 = listI_Handler(:BOOLEAN, decl.listI)
-#		return listI_Handler(:BOOLEAN, decl.listI)
 	end
 	if (decl.decl != nil)
 		result2 = decl_Handler(decl.decl)
@@ -97,27 +98,29 @@ end
 def instr_Handler(instr, iterVar=nil)
 	case instr.opID[0]
 	when :INSTR
+		totResult = 0
 		instr.branches.each do |i|
-			instr_Handler(i,iterVar)
+			totResult += instr_Handler(i,iterVar)
 		end
+		return totResult
 	when :ASSIGN
 		if iterVar != nil
-			assign_Handler(instr.branches[0], iterVar)
+			return assign_Handler(instr.branches[0], iterVar)
 		else
-			assign_Handler(instr.branches[0])
+			return assign_Handler(instr.branches[0])
 		end
 	when :READ
-		read_Handler(instr)
+		return read_Handler(instr)
 	when :WRITE
-		write_Handler(instr)
+		return write_Handler(instr)
 	when :CONDITIONAL_STATEMENT
-		conditional_statment_Handler(instr.branches[0])
+		return conditional_statment_Handler(instr.branches[0])
 	when :IND_LOOP
-		iLoop_Handler(instr.branches[0])
+		return iLoop_Handler(instr.branches[0])
 	when :DET_LOOP
-		dLoop_Handler(instr.branches[0])
+		return dLoop_Handler(instr.branches[0])
 	when :SCOPE
-		scope_Handler(instr.branches[0])
+		return scope_Handler(instr.branches[0])
 	end
 end
 
@@ -176,34 +179,37 @@ end
 def conditional_statment_Handler(cs)
 	expr = cs.elems[0]
 	instr1 = cs.elems[1]
-	instr_Handler(instr1)
+	result = instr_Handler(instr1)
 	if (cs.elems[2] != nil)
 		instr2 = cs.elems[2]
-		instr_Handler(instr2)
+		result += instr_Handler(instr2)
 	end
 	if (expression_Handler(expr) != :BOOLEAN)
 		puts "CONDITIONAL STATEMENT ERROR: expression must be boolean."
-		return 1
+		result += 1
 	end
-	return 0
+	return result
 end
 
 # Manejador de la instruccion IND LOOP.
 def iLoop_Handler(iLoop)
+	result = 0
 	expr = iLoop.elems[0]
 	if (expression_Handler(expr) != :BOOLEAN)
 		puts "IND LOOP ERROR: expression must be boolean."
-		return 1
+		result += 1
 	end
 	instr = iLoop.elems[1]
-	instr_Handler(instr)
-	return 0
+	result += instr_Handler(instr)
+	return result
 end
 
 # Manejador de la instruccion DET LOOP.
 def dLoop_Handler(dLoop)
+	result = 0
 	if (dLoop.types[0] == :VARIABLE)
 		iterVar = dLoop.elems[0].term
+		# Busca la variable, si la encuentra, la actualiza, si no, la inserta.
 		if ($symTable.lookup(iterVar) == nil)
 			$symTable.insert(iterVar, [:NUMBER, nil])
 		else
@@ -215,11 +221,11 @@ def dLoop_Handler(dLoop)
 		typeExpr2 = expression_Handler(expr2)
 		if (typeExpr1 != :NUMBER) or (typeExpr2 != :NUMBER)
 			puts "DET LOOP ERROR: expressions must be arithmetic."
-			return 1
+			result += 1
 		end
 		instr = dLoop.elems[3]
-		instr_Handler(instr, iterVar)
-		return 0
+		result += instr_Handler(instr, iterVar)
+		return result
 	else
 		expr1 = dLoop.elems[0]
 		typeExpr1 = expression_Handler(expr1)
@@ -227,11 +233,11 @@ def dLoop_Handler(dLoop)
 		typeExpr2 = expression_Handler(expr2)
 		if (typeExpr1 != :NUMBER) or (typeExpr2 != :NUMBER)
 			puts "DET LOOP ERROR: expressions must be arithmetic."
-			return 1
+			result += 1
 		end
 		instr = dLoop.elems[2]
-		instr_Handler(instr)
-		return 0
+		result += instr_Handler(instr)
+		return result
 	end
 end
 

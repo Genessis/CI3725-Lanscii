@@ -71,9 +71,7 @@ if (lexer.identifier(file))
 		puts
 	end
 	if printSymbolTable
-		puts "Symbol table: "
 		program_Handler(ast)	# Verificacion semantica
-		puts
 	end
 end
 file.close
