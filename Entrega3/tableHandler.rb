@@ -35,17 +35,19 @@ def scope_Handler(scope)
 	symTableAux = SymbolTable.new($symTable)
 	$symTable = symTableAux
 	#Manejo de la estructura.
-	decl_Handler(scope.decl)
+	declError = decl_Handler(scope.decl)
+	puts "declError = #{declError}"
 	instr_Handler(scope.inst)
+	puts "instrError = #{instrError}"
 	# Se empila la tabla en la pila.
 	$tableStack << $symTable
 	$symTable = $symTable.father
 	# Si ya se analizo todo el programa, se imprimen cada
 	# de las tablas.
 	if ($symTable == nil)
-#		if (errDecl or errInstr)
-#			abort
-#		end
+		if (declError > 0)
+			abort
+		end
 		$tableStack.reverse!
 		$tableStack.each do |st|
 			st.print_Table
@@ -55,20 +57,22 @@ end
 
 # Manejador de declaraciones.
 def decl_Handler(decl)
+	result2 = 0
 	case decl.type
 	when :AT
-		listI_Handler(:CANVAS, decl.listI)
+		result1 = listI_Handler(:CANVAS, decl.listI)
 #		return listI_Handler(:CANVAS, decl.listI)
 	when :PERCENT
-		listI_Handler(:NUMBER, decl.listI)
+		result1 = listI_Handler(:NUMBER, decl.listI)
 #		return listI_Handler(:NUMBER, decl.listI)
 	when :EXCLAMATION_MARK
-		listI_Handler(:BOOLEAN, decl.listI)
+		result1 = listI_Handler(:BOOLEAN, decl.listI)
 #		return listI_Handler(:BOOLEAN, decl.listI)
 	end
 	if (decl.decl != nil)
-		decl_Handler(decl.decl)
+		result2 = decl_Handler(decl.decl)
 	end
+	return result1 + result2
 end
 
 # Manejador de lista de identificadores
@@ -76,11 +80,16 @@ def listI_Handler(type, listI)
 	if !($symTable.contains(listI.id.term))
 		$symTable.insert(listI.id.term, [type, nil])
 		if (listI.listI != nil)
-			listI_Handler(type, listI.listI)
+			return listI_Handler(type, listI.listI)
 		end
+		return 0
 	else
 		puts "ERROR: variable '#{listI.id.term}' was declared before" \
 				" at the same scope."
+		if (listI.listI != nil)
+			return listI_Handler(type, listI.listI) + 1
+		end
+		return 1
 	end
 end
 
