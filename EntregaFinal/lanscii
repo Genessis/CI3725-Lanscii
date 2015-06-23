@@ -71,6 +71,6 @@ if (lexer.identifier(file))
 
 	if (program_Handler(ast, printSymbolTable) == 0)
 		program_Interpreter(ast)
-	end	# Verificacion semantica
+	end
 end
 file.close
