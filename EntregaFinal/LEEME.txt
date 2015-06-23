@@ -1,0 +1,34 @@
+Genessis Sanchez	11-10935
+Daniela Socas		11-10979
+
+
+Decisiones de implementacion:
+	Para esta entrega se decidio crear una clase SymbolClass cuyos
+	atributos son:
+		- Un HashMap para almacenar las variables declaradas
+		- Un atributo Father que apunta a la tabla padre de
+			la misma.
+	La misma, junto a sus metodos, se encuentra en el archivo "symbolTable.rb"
+
+	Asimismo, en el archivo "tableHandler.rb" se encuentran
+	todos los metodos y funciones consideradas necesarias para
+	el manejo de las tablas de simbolos asociadas a cada scope,
+	asi como de la verificacion de tipos de cada estructura;
+	esto, con rutinas asociadas a cada instruccion y cada tipo de
+	expresion de Lanscii (i.e. expresiones binarias, unarias y
+	parentizadas).
+
+Estado actual del proyecto:
+	Ademas de cumplir con las exigencias de las entregas previas,
+	el interpretador esta en la capacidad de reportar los siguientes
+	errores:
+		-Errores de redeclaraciones de variables dentro de un mismo alcance.
+		-Utilizacion de variables no declaradas en ese alcance.
+		-Modificacion de variables de iteracion.
+		-Errores de tipos.
+
+Comentarios respecto al proyecto:
+	El interpretador es incapaz de reportar la linea y columna de los
+	errores asociados a la tabla de simbolos tal y como se muestra en
+	el ejemplo; sin embargo (y luego de preguntar), se detrmino que 
+	dicha funcionalidad no era necesaria.

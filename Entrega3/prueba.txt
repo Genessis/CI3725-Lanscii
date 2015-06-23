@@ -1,21 +1,3 @@
-{%gol @colombia !jeje |
-	 gol = -2;
-	 colombia = </>';
-	 colombia = $colombia ~ (# ~ $<|>);
-	 jeje = (-4 = 5)^ /\ (true = true) \/ (colombia /= #);
-	 read jeje;
-	 write colombia;
-	 (colombia = colombia ? gol = 2 : gol = 4);
-	 [2 < 3 | gol=2; gol = gol +1];
-	 [x : 2+1 .. 3 | gol = 2; gol = gol +1];
-	 {!bool |
-	  	 bool = true;
-	  	 x = 4;
-	  	 {
-	  	  x = 6;
-	  	  { !bool2 |
-	  	  	bool2 = false /\ true \/ jeje
-	  	  }
-	  	 }
-	 }
+{%gol |
+	read gol
 }

@@ -1,0 +1,13 @@
+{!bool %int @canv |
+	canv = </>
+{-	int = 2;
+	{%int2 |
+		[hola : 1..2|
+			int2 = hola;
+			((int2 < int) ?
+				bool = false :
+				bool = true
+			)
+		]
+	}-}
+}

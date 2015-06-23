@@ -1,0 +1,76 @@
+#!/usr/bin/env ruby
+=begin
+ *  UNIVERSIDAD SIMÓN BOLÍVAR
+ *  Archivo: lanscii
+ *
+ *  Contenido:
+ *          Interpretador LANSCII
+ *
+ *  Creado por:
+ *			Genessis Sanchez	11-10935
+ *          Daniela Socas		11-10979
+ *
+ *  Última modificación: 14 de junio de 2015
+=end
+require './lexer.rb'
+require './parser.rb'
+require './tableHandler.rb'
+require './astInterpreter.rb'
+
+
+arg = ARGV
+
+# Chequeo de flags
+printTokens = false			
+printAST = false
+printSymbolTable = false	
+if arg.count == 0
+	puts "NAME: 	Lanscii - Interpreted scripting languange."
+	puts "USAGE: 	./lanscii file [-t] [-a] [-s]"
+	abort
+else 
+	while arg.count >= 1
+		case arg.first
+		when "-s"						# Flag para imprimir la tabla de símbolos.
+			printSymbolTable = true
+		when "-t"						# Flag para imprimir lista de tokens.
+			printTokens = true
+		when "-a"						# Flag para imprimir el AST.
+			printAST = true
+		end
+		arg = arg.drop(1)
+	end
+end
+
+# Ejecucion de Lanscii
+file_name = ARGV.first
+file = File.open(file_name, "r")
+lexer = Lexer.new
+# Verificacion lexicografica
+if (lexer.identifier(file))
+	# Verificacion sintactica
+	parser = Parser.new(lexer)
+	begin
+		ast = parser.parse
+	rescue => err
+		Error = SyntaxError.new()
+		puts "Syntax Error: #{err}"
+		abort
+	end
+	# Salida de Lanscii
+	if printTokens
+		puts "Tokens list:"
+		lexer.print_Tokens
+		puts
+	end
+	if printAST
+		puts "AST:"
+		ast.printAST(0)
+		puts
+	end
+
+	if (program_Handler(ast, printSymbolTable) == 0)
+		program_Interpreter(ast)
+	end	# Verificacion semantica
+end
+file.close
