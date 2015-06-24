@@ -1,7 +1,16 @@
 {!bool %int @canv canv2 |
-	int = 9/0;
-	bool = bool
-{-	int = 2;
+	canv = </>;
+	canv2 = <|>;
+	canv = canv & canv2 & canv2;
+	write canv;
+	write canv'
+{-	canv = canv & canv2;
+	canv = canv ~ canv;
+	canv = canv ~ canv;
+	canv = canv & canv;
+	canv = canv & #;
+	write canv
+	int = 2;
 	{%int2 |
 		[hola : 1..2|
 			int2 = hola;
