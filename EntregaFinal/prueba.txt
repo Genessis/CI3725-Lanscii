@@ -1,23 +1,11 @@
-{!bool %int @canv canv2 |
-	canv = </>;
-	canv2 = <|>;
-	canv = canv & canv2 & canv2;
-	write canv;
-	write canv'
-{-	canv = canv & canv2;
-	canv = canv ~ canv;
-	canv = canv ~ canv;
-	canv = canv & canv;
-	canv = canv & #;
-	write canv
-	int = 2;
-	{%int2 |
-		[hola : 1..2|
-			int2 = hola;
-			((int2 < int) ?
-				bool = false :
-				bool = true
-			)
-		]
-	}-}
+{ @c d |
+	c = #; d = #;
+	[i : 0 .. 9 |
+		(i % 2 = 0
+			? c = c ~ <|>; d = d ~ <->
+			: c = c ~ <->; d = d ~ <|>
+		)
+	];
+	c = c & d & c & d;
+	write c
 }

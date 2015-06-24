@@ -10,7 +10,7 @@
  *			Genessis Sanchez	11-10935
  *          Daniela Socas		11-10979
  *
- *  Última modificación: 14 de junio de 2015
+ *  Última modificación: 24 de junio de 2015
 =end
 require './lexer.rb'
 require './parser.rb'
@@ -57,7 +57,7 @@ if (lexer.identifier(file))
 		puts "Syntax Error: #{err}"
 		abort
 	end
-	# Salida de Lanscii
+	# Salida de Lanscii y ejecucion del programa
 	if printTokens
 		puts "Tokens list:"
 		lexer.print_Tokens

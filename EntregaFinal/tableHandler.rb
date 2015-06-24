@@ -117,7 +117,7 @@ def instr_Handler(instr, iterVar=nil)
 	when :WRITE
 		return write_Handler(instr)
 	when :CONDITIONAL_STATEMENT
-		return conditional_statment_Handler(instr.branches[0])
+		return conditional_statement_Handler(instr.branches[0])
 	when :IND_LOOP
 		return iLoop_Handler(instr.branches[0])
 	when :DET_LOOP
@@ -179,7 +179,7 @@ def write_Handler(write)
 end
 
 # Manejador de la instruccion CONDITIONAL STATEMENT.
-def conditional_statment_Handler(cs)
+def conditional_statement_Handler(cs)
 	expr = cs.elems[0]
 	instr1 = cs.elems[1]
 	result = instr_Handler(instr1)

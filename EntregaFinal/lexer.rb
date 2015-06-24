@@ -10,7 +10,7 @@
  *			Genessis Sanchez	11-10935
  *          Daniela Socas		11-10979
  *
- *  Último midificación: 13 de junio de 2015
+ *  Último modificación: 13 de junio de 2015
 =end
 
 class Token
