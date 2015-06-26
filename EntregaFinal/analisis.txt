@@ -1,0 +1,40 @@
+# *  UNIVERSIDAD SIMÓN BOLÍVAR
+# *  Archivo: analisis.txt
+# *
+# *  Contenido:
+# *          Análisis teórico-práctico de la 4ta entrega. 
+# *
+# *  Creado por:
+# *			Genessis Sanchez	11-10935
+# *          Daniela Socas		11-10979
+# *
+# *  Última modificación: 24 Junio de 2015
+
+Análisis Teórico-Práctico
+
+Luego de haber creado un interpretador de código Lanscii explique, de acuerdo
+con cada etapa de desarrollo:
+• Análisis Lexicográfico.
+• Análisis Sintáctico.
+• Tabla de símbolos y chequeo de tipos.
+• Intérprete y chequeos dinámicos.
+
+Cuál es la relación existente entre cada una y lo estudiado en la teoría
+del curso CI3725: Traductores e Interpretadores? Qué elementos
+permiten definir -teóricamente- un interpretador de un lenguaje de
+programación?
+
+    Desde el inicio del curso se nos viene hablando de los lenguajes de programación 
+y como estos son interpretados por las máquias, gracias a este proyecto nos dimos 
+cuenta como esa parte teórica vista en el salón es puesta en práctica para obtener 
+lo que ahora en nuestro propio interpretador de un lenguaje llamado Lanscii.
+
+	La primera parte que se nos mandó se trataba de hacer un análisis lexicográfico.
+Este se encarga de agarrar una secuencia de caracteres y convertirla en una secuencia 
+de tokens, los cuales leen las lineas de caracteres válidas y las clasifican con 
+algún tipo. Para esta parte se nos hizo vital el uso de expresiones regulares y el
+conocimiento de los autómagtas simples, vistos en clase, para así poder agarrar 
+del programa las palabras siguiendo el patrón querido para crear el token y poder 
+clasificarlo en el tipo adecuado. 
+
+	Una vez terminado el lexer pasamos al análisis sintáctico, el cual 
