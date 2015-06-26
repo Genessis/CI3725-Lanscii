@@ -10,7 +10,7 @@
  *			Genessis Sanchez	11-10935
  *          Daniela Socas		11-10979
  *
- *  Última modificación: 24 de Junio de 2015
+ *  Última modificación: 25 de Junio de 2015
 =end
 
 require './ruleClasses.rb'
@@ -331,35 +331,25 @@ def unaExp_Interpreter(expr)
 	valExpr = expr_Interpreter(expr.elem)
 	case expr.op
 	when /^\$/
-		exprHD = valExpr.partition("\n").first.length
-		exprVD = valExpr.count("\n") + 1
-		auxStr = valExpr
-		charMatrix = Array.new(exprVD){Array.new(exprHD)}
-		# Construccion de la matriz original
-		for i in 0..exprVD-1
-			for j in 0..exprHD-1
-				charMatrix[i][j] = auxStr[j]
-			end
-			auxStr = auxStr.partition("\n").last
-		end
-		charMatrixRot = Array.new(exprHD){Array.new(exprVD)}
-		# Construccion de la matriz  de rotacion.
-		for i in 0..exprVD-1
-			for j in 0..exprHD-1
-				charMatrixRot[j][(exprVD-1)-i] = charMatrix[i][j]
-			end
-		end
-		# Construccion de la salida.
-		auxStr = ""
-		for i in 0..exprHD-1
-			for j in 0..exprVD-1
-				auxStr << charMatrixRot[i][j]
-			end
-			if (i != exprHD-1)
-				auxStr << "\n"
+		len = valExpr.length
+		result = ""
+		for i in 0..len-1
+			case valExpr[i]
+			when "\n"
+				result << valExpr[i]				
+			when "\s"
+				result << valExpr[i]
+			when "\\"
+				result << "/"
+			when "/"
+				result << "\\"
+			when "-"
+				result << "|"
+			when  "|"
+				result << "-"
 			end
 		end
-		return auxStr
+		return result
 	when /^'/
 		exprHD = valExpr.partition("\n").first.length
 		exprVD = valExpr.count("\n") + 1
@@ -375,16 +365,16 @@ def unaExp_Interpreter(expr)
 		# Construccion de la matriz traspuesta.
 		charMatrix = charMatrix.transpose
 		# Construccion de la salida
-		auxStr = ""
+		result = ""
 		for i in 0..exprHD-1
 			for j in 0..exprVD-1
-				auxStr << charMatrix[i][j]
+				result << charMatrix[i][j]
 			end
 			if (i != exprHD-1)
-				auxStr << "\n"
+				result << "\n"
 			end
 		end
-		return auxStr
+		return result
 	when /^\^/
 		return !(valExpr)
 	when /^-/

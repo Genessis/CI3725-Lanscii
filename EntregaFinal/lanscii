@@ -10,7 +10,7 @@
  *			Genessis Sanchez	11-10935
  *          Daniela Socas		11-10979
  *
- *  Última modificación: 24 de junio de 2015
+ *  Última modificación: 25 de junio de 2015
 =end
 require './lexer.rb'
 require './parser.rb'
@@ -42,7 +42,6 @@ else
 	end
 end
 
-# Ejecucion de Lanscii
 file_name = ARGV.first
 file = File.open(file_name, "r")
 lexer = Lexer.new
@@ -68,9 +67,8 @@ if (lexer.identifier(file))
 		ast.printAST(0)
 		puts
 	end
-
 	if (program_Handler(ast, printSymbolTable) == 0)
-		program_Interpreter(ast)
+		program_Interpreter(ast) # Analisis dinamico e interpretacion
 	end
 end
 file.close
