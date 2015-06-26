@@ -31,10 +31,33 @@ lo que ahora en nuestro propio interpretador de un lenguaje llamado Lanscii.
 
 	La primera parte que se nos mandó se trataba de hacer un análisis lexicográfico.
 Este se encarga de agarrar una secuencia de caracteres y convertirla en una secuencia 
-de tokens, los cuales leen las lineas de caracteres válidas y las clasifican con 
-algún tipo. Para esta parte se nos hizo vital el uso de expresiones regulares y el
-conocimiento de los autómagtas simples, vistos en clase, para así poder agarrar 
-del programa las palabras siguiendo el patrón querido para crear el token y poder 
-clasificarlo en el tipo adecuado. 
+de tokens, los cuales leen los conjuntos de caracteres y los clasifican según el  
+el tipo adecuado, les dan un significado. Para esta parte se nos hizo vital el uso 
+de expresiones regulares y el conocimiento de autómatas simples, vistos en clase, 
+para así poder agarrar del programa las palabras siguiendo el patrón querido para 
+crear los tokens que usaremos en la próxima etapa. 
 
-	Una vez terminado el lexer pasamos al análisis sintáctico, el cual 
+	Una vez terminado el lexer pasamos al análisis sintáctico, el cual debe revisar 
+que se cumplan las reglas y estructura del programa. Para esto tuvimos que escribir 
+una gramática libre de contexto tomando en cuenta todo lo visto en clase, que 
+incluyera todas las especificaciones sintáticas. Una vez implementada esta parte
+(llamada parser)lo que haces es recibir los tokens y agruparlos gramaticalmente de
+tal manera que se cree un árbol, al cual llamaremos árbol sintáctivo abstracto(AST). 
+Esta fue la etapa en el que fue más necesaria el conocimiento teórico visto en clase
+ya que para hacer una gramática correcta hay que tomar en cuenta todas las reglas 
+y resolver los problemas shift-reduce y reduce-reduce correctamete.
+
+	Una vez creado el AST siguiendo la gramática y la precendencia dada pasamos a 
+hacer una tabla de símbolos la cual es necesaria para tener registro de los identificadores
+que tenemos con su tipo y su alcance, tabla que usaremos para el chequeo de tipos.
+
+	Una vez llegado a este punto ya contamos con toda la información necesaria para
+terminar el interprefador, lo que creamos es una serie de funciones que haga el 
+chequeo dinámico usando la tabla de símbolos e interprete el programa.
+
+	No cabe duda de que existe una estrecha relación entre lo visto en clase y el
+laboratorio de la materia ya que se nos mandó un proyecto en el que era vital agarrar
+los conceptos y ejercicios vistos en el salón y llevarlos a la parte práctica que 
+a la vez nos ayudó a entender aún más la teoría. Las expresiones regulares, los autómatas simples, el AST, la tabla de símbolos son elementos que permiten definir el interpretador. 
+Finalmente, debemos resaltar que las clases teóricas fueron clave para poder hacer y entender el parser y la tabla de símbolos.
+
